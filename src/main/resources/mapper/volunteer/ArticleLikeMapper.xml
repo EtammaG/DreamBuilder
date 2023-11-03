@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neu.dreambuilder.mapper.volunteer.ArticleLikeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.neu.dreambuilder.entity.volunteer.ArticleLike">
+        <result column="volun_id" property="volunId" />
+        <result column="article_id" property="articleId" />
+    </resultMap>
+
+</mapper>
