@@ -48,12 +48,13 @@ public class Kid {
     @ApiModelProperty("商城点数")
     private Integer mallPoint;
 
-    @ApiModelProperty("一个周前的total_point")
+    @ApiModelProperty("上周的total_point")
     private Integer pointWeekAgo;
 
-    @ApiModelProperty("一周前的total_point排行")
+    @ApiModelProperty("上周的total_point排行")
     private Integer rankWeekAgo;
 
+    @ApiModelProperty("上周的周排名")
     private Integer weekrankWeekAgo;
 
 

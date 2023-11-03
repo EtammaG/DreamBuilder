@@ -23,7 +23,7 @@ public class Reply {
     @ApiModelProperty("唯一ID")
     private Long id;
 
-    @ApiModelProperty("完成任务后提交的媒体文件路径")
+    @ApiModelProperty("提交媒体文件的路径")
     private String media;
 
     @ApiModelProperty("对提交的评分")

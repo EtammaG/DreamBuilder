@@ -24,7 +24,7 @@ public class Award {
     private Long id;
 
     @ApiModelProperty("名称")
-    private Integer name;
+    private String name;
 
     @ApiModelProperty("描述")
     private String description;
