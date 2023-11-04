@@ -42,6 +42,9 @@ public class Kid {
     @ApiModelProperty("简介")
     private String description;
 
+    @ApiModelProperty("详细信息")
+    private String detail;
+
     @ApiModelProperty("总点数（学习点数）")
     private Integer totalPoint;
 

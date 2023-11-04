@@ -967,7 +967,7 @@ GET
     "code": 200,
     "data": {
         "donationAmount": 20000,
-        "helprdAmount": 200
+        "helpedAmount": 200
     },
     "msg": "success"
 }

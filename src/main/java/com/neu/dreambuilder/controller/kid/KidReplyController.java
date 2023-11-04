@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/kid/reply")
 @PreAuthorize("hasAuthority('KID')")
-@Api(tags = "孩子任务提交相关接口")
+@Api(tags = "孩子端孩子任务提交相关接口")
 public class KidReplyController {
 
     @GetMapping("/{missionId}")

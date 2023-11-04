@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/kid/info")
 @PreAuthorize("hasAuthority('KID')")
-@Api(tags = "孩子信息相关接口")
+@Api(tags = "孩子端孩子信息相关接口")
 public class KidInfoController {
 
     @GetMapping("mission")
@@ -37,7 +37,7 @@ public class KidInfoController {
     }
 
     @GetMapping("recent")
-    @ApiOperation("获取孩子我的相关的信息")
+    @ApiOperation("获取孩子最近信息")
     public Result<KidRecDto> recent() {
         return Result.success();
     }

@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/kid/mission")
 @PreAuthorize("hasAuthority('KID')")
-@Api(tags = "孩子任务相关接口")
+@Api(tags = "孩子端孩子任务相关接口")
 public class KidMissionController {
 
     @GetMapping("/date/{date}")

@@ -121,7 +121,8 @@ DROP TABLE IF EXISTS `donor_project`;
 CREATE TABLE `donor_project` (
   `id` bigint NOT NULL COMMENT '项目ID',
   `name` varchar(45) DEFAULT NULL COMMENT '项目名称',
-  `description` text COMMENT '项目描述',
+  `description` varchar(500) DEFAULT NULL COMMENT '项目简介',
+  `detail` text COMMENT '详细信息',
   `pic` varchar(500) DEFAULT NULL COMMENT '项目照片地址',
   `location` varchar(50) DEFAULT NULL COMMENT '项目实施地',
   PRIMARY KEY (`id`)
@@ -221,7 +222,8 @@ CREATE TABLE `kid` (
   `school_id` bigint DEFAULT NULL COMMENT '学校ID',
   `grade` int DEFAULT NULL COMMENT '年级',
   `address` varchar(300) DEFAULT NULL COMMENT '住址',
-  `description` text COMMENT '简介',
+  `description` varchar(500) DEFAULT NULL COMMENT '简介',
+  `detail` text COMMENT '详细信息',
   `total_point` int DEFAULT NULL COMMENT '总点数（学习点数）',
   `mall_point` int DEFAULT NULL COMMENT '商城点数',
   `point_week_ago` int DEFAULT NULL COMMENT '上周的total_point',
@@ -682,4 +684,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-04 18:19:05
+-- Dump completed on 2023-11-04 19:53:38

@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/kid/award")
 @PreAuthorize("hasAuthority('KID')")
-@Api(tags = "孩子奖品相关接口")
+@Api(tags = "孩子端孩子奖品相关接口")
 public class KidAwardController {
 
     @GetMapping("/type")
