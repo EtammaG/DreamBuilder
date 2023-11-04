@@ -2,6 +2,7 @@ package com.neu.dreambuilder.controller.kid;
 
 import com.neu.dreambuilder.dto.Result;
 import com.neu.dreambuilder.entity.kid.Reply;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/kid/reply")
 @PreAuthorize("hasAuthority('KID')")
+@Api(tags = "孩子任务提交相关接口")
 public class KidReplyController {
 
     @GetMapping("/{missionId}")

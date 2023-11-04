@@ -8,6 +8,7 @@ import com.neu.dreambuilder.dto.kid.AwardExchangeDto;
 import com.neu.dreambuilder.entity.kid.Award;
 import com.neu.dreambuilder.entity.kid.AwardExample;
 import com.neu.dreambuilder.entity.kid.AwardType;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/kid/award")
 @PreAuthorize("hasAuthority('KID')")
+@Api(tags = "孩子奖品相关接口")
 public class KidAwardController {
 
     @GetMapping("/type")

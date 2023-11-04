@@ -1,4 +1,4 @@
-package com.neu.dreambuilder.dto.kid;
+package com.neu.dreambuilder.dto.mission;
 
 import com.neu.dreambuilder.entity.kid.Mission;
 import io.swagger.annotations.ApiModel;

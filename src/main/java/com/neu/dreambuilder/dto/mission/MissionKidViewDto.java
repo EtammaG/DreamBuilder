@@ -1,4 +1,4 @@
-package com.neu.dreambuilder.dto.kid;
+package com.neu.dreambuilder.dto.mission;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @ApiModel(value = "MissionDto", description = "任务概述")
-public class MissionViewDto {
+public class MissionKidViewDto {
 
     @ApiModelProperty("任务ID")
     private Long missionId;

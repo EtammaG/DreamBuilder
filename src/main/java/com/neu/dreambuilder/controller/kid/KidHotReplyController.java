@@ -3,6 +3,7 @@ package com.neu.dreambuilder.controller.kid;
 import com.neu.dreambuilder.dto.CommentDto;
 import com.neu.dreambuilder.dto.Result;
 import com.neu.dreambuilder.dto.kid.HotReplyDto;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/kid/hot/reply")
 @PreAuthorize("hasAuthority('KID')")
+@Api(tags = "孩子端推送热门提交相关接口")
 public class KidHotReplyController {
 
     @GetMapping

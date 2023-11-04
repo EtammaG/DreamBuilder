@@ -1,9 +1,10 @@
 package com.neu.dreambuilder.controller.volunteer;
 
 
+import com.neu.dreambuilder.dto.CommentDto;
 import com.neu.dreambuilder.dto.PageExample;
 import com.neu.dreambuilder.dto.Result;
-import com.neu.dreambuilder.dto.volunteer.VolunteerArticleDto;
+import com.neu.dreambuilder.dto.volunteer.ArticleDto;
 import com.neu.dreambuilder.entity.volunteer.Article;
 
 import io.swagger.annotations.Api;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/volunteer/article")
 @PreAuthorize("hasAuthority('VOLUNTEER')")
-@Api(value = "志愿者端文章相关信息接口")
+@Api(tags = "志愿者端文章相关信息接口")
 public class VolunteerArticleController {
 
     /**
@@ -24,19 +25,19 @@ public class VolunteerArticleController {
      */
     @GetMapping("/random")
     @ApiOperation(value = "志愿者页面滑动的文章")
-    public Result<VolunteerArticleDto> getRandomArticle(){
+    public Result<ArticleDto> getRandomArticle(){
         return null;
     }
 
     @PostMapping("/list")
     @ApiOperation("文章列表（分页）")
-    public Result<PageExample<VolunteerArticleDto>> getAllArticle(@RequestBody PageExample<Object> articlePage){
+    public Result<PageExample<ArticleDto>> getAllArticle(@RequestBody PageExample<Object> articlePage){
         return null;
     }
 
     @PostMapping("/search")
     @ApiOperation("搜索文章（分页）")
-    public Result<PageExample<VolunteerArticleDto>> getSearchArticle(@RequestBody PageExample<Article> articlePage){
+    public Result<PageExample<ArticleDto>> getSearchArticle(@RequestBody PageExample<Article> articlePage){
         return null;
     }
 
@@ -54,7 +55,7 @@ public class VolunteerArticleController {
 
     @PostMapping("/comment")
     @ApiOperation("被收藏的文章")
-    public Result<PageExample<VolunteerArticleDto>> getCollectedArticle(@RequestBody PageExample<Object> articlePage){
+    public Result<PageExample<ArticleDto>> getCollectedArticle(@RequestBody PageExample<Object> articlePage){
         return null;
     }
 

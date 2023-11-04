@@ -1,7 +1,7 @@
 package com.neu.dreambuilder.controller.volunteer;
 
 import com.neu.dreambuilder.dto.Result;
-import com.neu.dreambuilder.dto.kid.KidRecent;
+import com.neu.dreambuilder.dto.kid.KidRecDto;
 import com.neu.dreambuilder.entity.kid.Kid;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +24,7 @@ public class VolunteerKidController {
      */
     @GetMapping("/random/recent")
     @ApiOperation(value = "主页面孩子近况")
-    public Result<KidRecent> getRandom(){
+    public Result<KidRecDto> getRandom(){
 
         return null;
     }
