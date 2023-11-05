@@ -573,6 +573,75 @@ LOCK TABLES `kid_type` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `user_donor`
+--
+
+DROP TABLE IF EXISTS `user_donor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_donor` (
+  `donor_id` bigint DEFAULT NULL,
+  `username` varchar(64) DEFAULT NULL,
+  `password` varchar(64) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='捐赠者用户';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_donor`
+--
+
+LOCK TABLES `user_donor` WRITE;
+/*!40000 ALTER TABLE `user_donor` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_donor` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_kid`
+--
+
+DROP TABLE IF EXISTS `user_kid`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_kid` (
+  `kid_id` bigint DEFAULT NULL,
+  `username` varchar(64) DEFAULT NULL,
+  `password` varchar(64) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='孩子用户';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_kid`
+--
+
+LOCK TABLES `user_kid` WRITE;
+/*!40000 ALTER TABLE `user_kid` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_kid` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_volunteer`
+--
+
+DROP TABLE IF EXISTS `user_volunteer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `user_volunteer` (
+  `volunteer_id` bigint DEFAULT NULL,
+  `username` varchar(64) DEFAULT NULL,
+  `password` varchar(64) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='志愿者用户';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_volunteer`
+--
+
+LOCK TABLES `user_volunteer` WRITE;
+/*!40000 ALTER TABLE `user_volunteer` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_volunteer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `volun_article`
 --
 
@@ -647,6 +716,28 @@ LOCK TABLES `volun_article_like` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `volun_to_kid`
+--
+
+DROP TABLE IF EXISTS `volun_to_kid`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `volun_to_kid` (
+  `volun_id` bigint DEFAULT NULL COMMENT '志愿者ID',
+  `kid_id` bigint DEFAULT NULL COMMENT '孩子ID'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='志愿者、孩子的对应关系';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `volun_to_kid`
+--
+
+LOCK TABLES `volun_to_kid` WRITE;
+/*!40000 ALTER TABLE `volun_to_kid` DISABLE KEYS */;
+/*!40000 ALTER TABLE `volun_to_kid` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `volunteer`
 --
 
@@ -684,4 +775,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-04 19:53:38
+-- Dump completed on 2023-11-05 22:35:38

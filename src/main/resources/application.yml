@@ -50,3 +50,12 @@ mybatis-plus:
     db-config:
       update-strategy: not_null
       logic-not-delete-value: 0
+
+dream-builder:
+  redis:
+    prefix:
+      login-donor: 'login:donor:'
+      login-kid: 'login:kid:'
+      login-volunteer: 'login:volunteer:'
+  sys:
+    sign-in-duration: P1D

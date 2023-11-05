@@ -32,11 +32,11 @@ public class SwaggerConfig {
                 "The API of DreamBuilder", // 标题
                 "I'm the description", // 描述
                 "v1.0", // 版本
-                "https://dreambuilder.com", // 公司链接
+                "https://github.com/EtammaG/DreamLinghter", // 公司链接
                 new Contact(
                         "EtammaG",
-                        "https://dreambuilder.com/EtammaG",
-                        "EtammaG@dreambuilder.com"), // 联系人信息
+                        "https://github.com/EtammaG",
+                        "EtammaG@outlook.com"), // 联系人信息
                 "Apache 2.0 许可", // 许可
                 "www.xxx.com", // 许可连接
                 new ArrayList<>()// 扩展
