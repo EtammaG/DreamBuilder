@@ -15,13 +15,13 @@ public class PlusGenerator {
                     builder
                             .disableOpenDir()
                             .enableSwagger() // 开启 swagger 模式
-                            .outputDir("D:\\CodeProject\\DreamBuilder\\src\\main\\java") // 指定输出目录
+                            .outputDir("D:\\CodeProject\\IntelliJ_IDEA\\DreamBuilder\\src\\main\\java") // 指定输出目录
                     ;
                 })
                 .packageConfig(builder -> {
                     builder.parent("com.neu") // 设置父包名
                             .moduleName("dreambuilder") // 设置父包模块名
-                            .pathInfo(Collections.singletonMap(OutputFile.xml, "D:\\CodeProject\\DreamBuilder\\src\\main\\resources\\mapper")) // 设置mapperXml生成路径
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, "D:\\CodeProject\\IntelliJ_IDEA\\DreamBuilder\\src\\main\\resources\\mapper")) // 设置mapperXml生成路径
                     ;
                 })
                 .strategyConfig(builder -> {
@@ -56,6 +56,10 @@ public class PlusGenerator {
 //                            .addInclude("volun_article_like")
 //                            .addInclude("volunteer")
 //                            .addTablePrefix("volun_")
+                            .addInclude("volun_to_kid")
+                            .addInclude("user_donor")
+                            .addInclude("user_kid")
+                            .addInclude("user_volunteer")
                             .entityBuilder()
                             .enableLombok() //使用lombok
                             .disableSerialVersionUID()
@@ -67,7 +71,7 @@ public class PlusGenerator {
 //                                            new Column("update_user", FieldFill.INSERT_UPDATE)
 //                                    ))
 //                                .logicDeleteColumnName("is_deleted")
-                            .fileOverride()
+//                            .fileOverride()
                             .controllerBuilder()
                             .enableRestStyle()
                             //.fileOverride()
