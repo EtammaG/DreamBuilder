@@ -1,5 +1,6 @@
 package com.neu.dreambuilder.controller.volunteer;
 
+import com.github.pagehelper.PageInfo;
 import com.neu.dreambuilder.dto.PageExample;
 import com.neu.dreambuilder.dto.Result;
 import com.neu.dreambuilder.dto.kid.KidVieDto;
@@ -26,14 +27,14 @@ public class VolunteerMissionController {
 
     @PostMapping("/list")
     @ApiOperation(value = "志愿者端任务列表")
-    public Result<PageExample<MissionVolViewDto>> getAllMission(@RequestBody PageExample<Mission> missionPageExample){
+    public Result<PageInfo<MissionVolViewDto>> getAllMission(@RequestBody PageExample<Mission> missionPageExample){
         return null;
     }
 
 
     @PostMapping("/allkid/detail")
     @ApiOperation("单独任务孩子的完成情况")
-    public Result<PageExample<KidVieDto>> getMissionAllDetail(@RequestBody PageExample<Mission> missionPageExample){
+    public Result<PageInfo<KidVieDto>> getMissionAllDetail(@RequestBody PageExample<Mission> missionPageExample){
         return null;
     }
 
