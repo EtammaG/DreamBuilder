@@ -25,6 +25,9 @@ spring:
         max-wait: -1ms
         max-idle: 8
         min-idle: 0
+  servlet:
+    multipart:
+      max-file-size: 50MB
 
 logging:
   pattern:
@@ -33,7 +36,7 @@ logging:
     com.eiji.ieat.mapper: trace
 
 mybatis:
-  mapper-locations: classpath:mapper/*.xml  #sql??????
+  mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -59,3 +62,4 @@ dream-builder:
       login-volunteer: 'login:volunteer:'
   sys:
     sign-in-duration: P1D
+    file-save-path: D:/Empty/

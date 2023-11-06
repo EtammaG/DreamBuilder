@@ -1,5 +1,6 @@
 package com.neu.dreambuilder.config;
 
+import com.neu.dreambuilder.filter.JwtAuthTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -13,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
 
@@ -28,6 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource(name = "volunteerDetailsServiceImpl")
     private UserDetailsService volunteerDetailsServiceImpl;
+
+    @Resource
+    private JwtAuthTokenFilter jwtAuthTokenFilter;
 
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {
@@ -66,7 +71,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.headers().frameOptions().sameOrigin();
-        //运行前端在同域名下嵌入网页
 
         http
                 .authorizeRequests()
@@ -75,9 +79,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-ui.html"
                 ).permitAll()
         //.hasAnyAuthority("ADMIN")
-
         ;
 
-        //http.addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

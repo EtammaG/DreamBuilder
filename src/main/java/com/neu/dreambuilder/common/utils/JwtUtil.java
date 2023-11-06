@@ -19,7 +19,7 @@ public class JwtUtil {
     /**
     * 秘钥明文
     */
-    private static final String JWT_KEY = "DREAM_BUILDER";
+    private static final String JWT_KEY = "NEU";
 
     /**
      * 使用UUID工具类生成一个不含-的UUID字符串

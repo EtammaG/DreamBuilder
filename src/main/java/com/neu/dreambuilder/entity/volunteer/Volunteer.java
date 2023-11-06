@@ -1,10 +1,11 @@
 package com.neu.dreambuilder.entity.volunteer;
 
-import java.time.LocalDate;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDate;
 
 /**
  * <p>
@@ -21,6 +22,9 @@ public class Volunteer {
 
     @ApiModelProperty("唯一ID")
     private Long id;
+
+    @ApiModelProperty("姓名")
+    private String name;
 
     @ApiModelProperty("0表示女性，1表示男性")
     private Integer gender;
@@ -42,6 +46,4 @@ public class Volunteer {
 
     @ApiModelProperty("照片地址")
     private String photo;
-
-
 }
