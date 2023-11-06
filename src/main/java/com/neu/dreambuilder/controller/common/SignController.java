@@ -1,5 +1,6 @@
 package com.neu.dreambuilder.controller.common;
 
+import com.neu.dreambuilder.common.annotation.LimitRequest;
 import com.neu.dreambuilder.dto.Result;
 import com.neu.dreambuilder.service.common.SignService;
 import io.swagger.annotations.Api;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+
 @Api(tags = "登录登出相关接口")
+
 public class SignController {
 
     private final SignService signService;
@@ -24,6 +27,7 @@ public class SignController {
 
     @PostMapping("/login")
     @PreAuthorize("isAnonymous()")
+    @LimitRequest(count = 20)
     public Result<String> login(String username, String password, @ApiParam("1表示donor，2表示kid，3表示volunteer") int type) {
         String jwt = signService.login(username, password, type);
         return jwt == null
