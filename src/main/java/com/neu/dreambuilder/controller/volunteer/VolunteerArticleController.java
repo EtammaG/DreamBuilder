@@ -1,6 +1,8 @@
 package com.neu.dreambuilder.controller.volunteer;
 
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.neu.dreambuilder.dto.CommentDto;
 import com.neu.dreambuilder.dto.PageExample;
 import com.neu.dreambuilder.dto.Result;
@@ -16,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping("/volunteer/article")
@@ -25,6 +28,8 @@ public class VolunteerArticleController {
 
     @Resource
     private VolunteerArticleService volunteerArticleService;
+
+
     /**
      *获取志愿者界面滚动文章
      * @return
@@ -37,31 +42,36 @@ public class VolunteerArticleController {
 
     @PostMapping("/list")
     @ApiOperation("文章列表（分页）")
-    public Result<PageExample<ArticleDto>> getAllArticle(@RequestBody PageExample<Object> articlePage){
-        return null;
+    public Result<PageInfo<ArticleDto>> getAllArticle(@RequestBody PageExample<Article> articlePage){
+        PageHelper.startPage(articlePage.getPageNum(),articlePage.getPageSize());
+
+        List<ArticleDto> articleDtos = volunteerArticleService.getAllArticle(articlePage.getExample().getTitle());
+        PageInfo<ArticleDto> pageInfo =new PageInfo<>(articleDtos);
+        return Result.success(pageInfo);
     }
 
-    @PostMapping("/search")
-    @ApiOperation("搜索文章（分页）")
-    public Result<PageExample<ArticleDto>> getSearchArticle(@RequestBody PageExample<Article> articlePage){
-        return null;
-    }
+
 
     @GetMapping("/detail/{id}")
     @ApiOperation("一篇文章的详细信息")
-    public Result<Article> getArticleDetail(@ApiParam(name = "id",value = "文章的id") Long id){
-        return null;
+    public Result<Article> getArticleDetail(@ApiParam(name = "id",value = "文章的id") @PathVariable String id){
+        long idt = Long.parseLong(id);
+        return volunteerArticleService.getArticleDetails(idt);
     }
 
     @GetMapping("/detail/{id}/comment")
-    @ApiOperation("一篇文章的详细信息")
-    public Result<CommentDto> getArticleDetailComment(@ApiParam(name = "id",value = "文章的id") Long id){
-        return null;
+    @ApiOperation("一篇文章的评论")
+    public Result<List<CommentDto>> getArticleDetailComment(@ApiParam(name = "id",value = "文章的id")  @PathVariable String id){
+        long idt = Long.parseLong(id);
+
+        return volunteerArticleService.getArticleComments(idt);
     }
 
     @PostMapping("/comment")
     @ApiOperation("被收藏的文章")
-    public Result<PageExample<ArticleDto>> getCollectedArticle(@RequestBody PageExample<Object> articlePage){
+    public Result<PageInfo<ArticleDto>> getCollectedArticle(@RequestBody PageExample<Object> articlePage){
+        PageHelper.startPage(articlePage.getPageNum(),articlePage.getPageSize());
+
         return null;
     }
 
