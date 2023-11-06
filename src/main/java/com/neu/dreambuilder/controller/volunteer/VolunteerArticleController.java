@@ -7,11 +7,15 @@ import com.neu.dreambuilder.dto.Result;
 import com.neu.dreambuilder.dto.volunteer.ArticleDto;
 import com.neu.dreambuilder.entity.volunteer.Article;
 
+import com.neu.dreambuilder.service.volunteer.VolunteerArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/volunteer/article")
@@ -19,6 +23,8 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "志愿者端文章相关信息接口")
 public class VolunteerArticleController {
 
+    @Resource
+    private VolunteerArticleService volunteerArticleService;
     /**
      *获取志愿者界面滚动文章
      * @return
@@ -26,7 +32,7 @@ public class VolunteerArticleController {
     @GetMapping("/random")
     @ApiOperation(value = "志愿者页面滑动的文章")
     public Result<ArticleDto> getRandomArticle(){
-        return null;
+        return volunteerArticleService.getRandomArticle();
     }
 
     @PostMapping("/list")
