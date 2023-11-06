@@ -55,7 +55,7 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
 
 
         //根据id禁止频繁发送请求
-        if (Objects.isNull(stringRedisTemplate.opsForHash().entries(redisKey))){
+        if (stringRedisTemplate.opsForHash().entries(redisKey).isEmpty()){
             Map<String,Object> hashMap = new HashMap<>();
             hashMap.put("time", LocalDateTime.now());
             hashMap.put("count",0);
