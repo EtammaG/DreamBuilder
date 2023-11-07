@@ -1,12 +1,15 @@
 package com.neu.dreambuilder.controller.volunteer;
 
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.neu.dreambuilder.common.utils.JwtUtil;
 import com.neu.dreambuilder.dto.CommentDto;
 import com.neu.dreambuilder.dto.PageExample;
 import com.neu.dreambuilder.dto.Result;
 import com.neu.dreambuilder.dto.volunteer.ArticleDto;
+import com.neu.dreambuilder.entity.user.IUserDetails;
 import com.neu.dreambuilder.entity.volunteer.Article;
 
 import com.neu.dreambuilder.service.volunteer.VolunteerArticleService;
@@ -14,10 +17,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import java.net.http.HttpRequest;
 import java.util.List;
 
 @RestController
@@ -28,6 +36,9 @@ public class VolunteerArticleController {
 
     @Resource
     private VolunteerArticleService volunteerArticleService;
+
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
 
     /**
@@ -69,10 +80,15 @@ public class VolunteerArticleController {
 
     @PostMapping("/comment")
     @ApiOperation("被收藏的文章")
-    public Result<PageInfo<ArticleDto>> getCollectedArticle(@RequestBody PageExample<Object> articlePage){
+    public Result<PageInfo<ArticleDto>> getCollectedArticle(@RequestBody PageExample<Object> articlePage, HttpServletRequest request){
         PageHelper.startPage(articlePage.getPageNum(),articlePage.getPageSize());
+        String token = request.getHeader("token");
+        String redisKey = JwtUtil.parseJWT(token).getBody().getSubject();
+        IUserDetails userDetails = JSON.parseObject(stringRedisTemplate.opsForValue().get(redisKey), IUserDetails.class);
+        List<ArticleDto> articleColleted = volunteerArticleService.getArticleColleted(userDetails.getId());
+        PageInfo<ArticleDto> pageInfo  = new PageInfo<>(articleColleted);
 
-        return null;
+        return Result.success(pageInfo);
     }
 
 

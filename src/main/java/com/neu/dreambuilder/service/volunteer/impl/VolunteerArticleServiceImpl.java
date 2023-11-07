@@ -7,8 +7,10 @@ import com.neu.dreambuilder.dto.Result;
 import com.neu.dreambuilder.dto.volunteer.ArticleDto;
 import com.neu.dreambuilder.entity.volunteer.Article;
 import com.neu.dreambuilder.entity.volunteer.ArticleComment;
+import com.neu.dreambuilder.entity.volunteer.ArticleLike;
 import com.neu.dreambuilder.entity.volunteer.Volunteer;
 import com.neu.dreambuilder.mapper.volunteer.ArticleCommentMapper;
+import com.neu.dreambuilder.mapper.volunteer.ArticleLikeMapper;
 import com.neu.dreambuilder.mapper.volunteer.ArticleMapper;
 import com.neu.dreambuilder.mapper.volunteer.VolunteerMapper;
 import com.neu.dreambuilder.service.volunteer.VolunteerArticleService;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.xml.stream.events.Comment;
+import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +36,9 @@ public class VolunteerArticleServiceImpl implements VolunteerArticleService {
 
     @Resource
     private VolunteerMapper volunteerMapper;
+
+    @Resource
+    private ArticleLikeMapper articleLikeMapper;
 
 
 
@@ -116,6 +122,33 @@ public class VolunteerArticleServiceImpl implements VolunteerArticleService {
 
 
         return Result.success(commentDtos);
+    }
+
+    @Override
+    public List<ArticleDto> getArticleColleted(Long id) {
+
+        LambdaQueryWrapper<ArticleLike> articleLikeQuery = new LambdaQueryWrapper<>();
+        articleLikeQuery.eq(ArticleLike::getVolunId,id);
+        List<ArticleLike> articleLikes = articleLikeMapper.selectList(articleLikeQuery);
+
+        List<ArticleDto> articleDtos = articleLikes.stream().map(articleLike -> {
+            LambdaQueryWrapper<Article> articleQuery = new LambdaQueryWrapper<>();
+            articleQuery.eq(Article::getId, articleLike.getArticleId());
+            Article article = articleMapper.selectOne(articleQuery);
+
+            ArticleDto articleDto = new ArticleDto();
+            BeanUtils.copyProperties(article, articleDto);
+            LambdaQueryWrapper<ArticleComment> commentQuery = new LambdaQueryWrapper<>();
+            commentQuery.eq(ArticleComment::getArticleId, articleLike.getArticleId());
+            Integer count = commentMapper.selectCount(commentQuery);
+            articleDto.setAmount(count);
+
+            return articleDto;
+
+        }).collect(Collectors.toList());
+
+
+        return articleDtos;
     }
 
 

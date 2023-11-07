@@ -17,4 +17,6 @@ public interface VolunteerArticleService {
     Result<Article> getArticleDetails(long id);
 
     Result<List<CommentDto>> getArticleComments(long id);
+
+    List<ArticleDto> getArticleColleted(Long id);
 }
