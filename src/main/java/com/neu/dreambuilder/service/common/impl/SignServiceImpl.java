@@ -44,6 +44,7 @@ public class SignServiceImpl implements SignService {
 
     @Override
     public String login(String username, String password, int type) {
+        System.out.println(username+password);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
         String keyPrefix;
         Authentication authenticate;

@@ -6,9 +6,9 @@ spring:
     name: dream_builder
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.200.100:3306/ieat?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/dream_builder?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
     username: root
-    password: Root_123
+    password: "031125"
     type: com.alibaba.druid.pool.DruidDataSource
   web:
     resources:
@@ -16,9 +16,9 @@ spring:
   mvc:
     static-path-pattern: /**
   redis:
-    host: 192.168.200.100
+    host: localhost
     port: 6379
-    password: 123456
+#    password: 123456
     jedis:
       pool:
         max-active: 8

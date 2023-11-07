@@ -4,6 +4,7 @@ package com.neu.dreambuilder.controller.volunteer;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.neu.dreambuilder.common.utils.BaseContext;
 import com.neu.dreambuilder.common.utils.JwtUtil;
 import com.neu.dreambuilder.dto.CommentDto;
 import com.neu.dreambuilder.dto.PageExample;
@@ -30,7 +31,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/volunteer/article")
-@PreAuthorize("hasAuthority('VOLUNTEER')")
+//@PreAuthorize("hasAuthority('VOLUNTEER')")
 @Api(tags = "志愿者端文章相关信息接口")
 public class VolunteerArticleController {
 
@@ -80,12 +81,11 @@ public class VolunteerArticleController {
 
     @PostMapping("/comment")
     @ApiOperation("被收藏的文章")
-    public Result<PageInfo<ArticleDto>> getCollectedArticle(@RequestBody PageExample<Object> articlePage, HttpServletRequest request){
+    public Result<PageInfo<ArticleDto>> getCollectedArticle(@RequestBody PageExample<Object> articlePage){
         PageHelper.startPage(articlePage.getPageNum(),articlePage.getPageSize());
-        String token = request.getHeader("token");
-        String redisKey = JwtUtil.parseJWT(token).getBody().getSubject();
-        IUserDetails userDetails = JSON.parseObject(stringRedisTemplate.opsForValue().get(redisKey), IUserDetails.class);
-        List<ArticleDto> articleColleted = volunteerArticleService.getArticleColleted(userDetails.getId());
+
+        IUserDetails currentIUserDetails = BaseContext.getCurrentIUserDetails();
+        List<ArticleDto> articleColleted = volunteerArticleService.getArticleColleted(currentIUserDetails.getId());
         PageInfo<ArticleDto> pageInfo  = new PageInfo<>(articleColleted);
 
         return Result.success(pageInfo);
