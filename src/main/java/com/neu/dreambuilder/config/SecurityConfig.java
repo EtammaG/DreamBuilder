@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
@@ -33,6 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Resource
     private JwtAuthTokenFilter jwtAuthTokenFilter;
+
+    @Resource
+    private AuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {
@@ -79,7 +83,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-ui.html"
                 ).permitAll()
         //.hasAnyAuthority("ADMIN")
-        ;
+      ;
+        http
+                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+
 
         http.addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }

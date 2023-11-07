@@ -7,11 +7,14 @@ import com.neu.dreambuilder.dto.kid.KidVieDto;
 import com.neu.dreambuilder.dto.mission.MissionDto;
 import com.neu.dreambuilder.dto.mission.MissionVolViewDto;
 import com.neu.dreambuilder.entity.kid.Mission;
+import com.neu.dreambuilder.service.volunteer.VolunteerMissionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/volunteer/mission")
@@ -19,9 +22,13 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "志愿者任务相关信息接口")
 public class VolunteerMissionController {
 
+    @Resource
+    private VolunteerMissionService volunteerMissionService;
+
     @GetMapping("/random")
     @ApiOperation(value = "志愿者主页面滑动的我的任务")
     public Result<MissionVolViewDto> getMission(){
+        volunteerMissionService.getRandomMission();
         return null;
     }
 
