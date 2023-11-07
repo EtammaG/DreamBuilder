@@ -60,6 +60,7 @@ CREATE TABLE `donor` (
 
 LOCK TABLES `donor` WRITE;
 /*!40000 ALTER TABLE `donor` DISABLE KEYS */;
+INSERT INTO `donor` VALUES (1,'A'),(2,'B');
 /*!40000 ALTER TABLE `donor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,6 +85,7 @@ CREATE TABLE `donor_kid_donation` (
 
 LOCK TABLES `donor_kid_donation` WRITE;
 /*!40000 ALTER TABLE `donor_kid_donation` DISABLE KEYS */;
+INSERT INTO `donor_kid_donation` VALUES (1,1,1,'2023-11-06 22:23:53'),(1,1,4,'2023-11-06 22:24:02'),(2,1,3,'2023-11-06 22:24:10'),(2,1,5,'2023-11-06 22:24:16');
 /*!40000 ALTER TABLE `donor_kid_donation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -159,6 +161,7 @@ CREATE TABLE `donor_project_donation` (
 
 LOCK TABLES `donor_project_donation` WRITE;
 /*!40000 ALTER TABLE `donor_project_donation` DISABLE KEYS */;
+INSERT INTO `donor_project_donation` VALUES (1,1,200,'2023-11-06 22:37:19'),(2,2,300,'2023-11-06 22:37:27');
 /*!40000 ALTER TABLE `donor_project_donation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -239,6 +242,7 @@ CREATE TABLE `kid` (
 
 LOCK TABLES `kid` WRITE;
 /*!40000 ALTER TABLE `kid` DISABLE KEYS */;
+INSERT INTO `kid` VALUES (123,'1',1,'1',1,1,'1','1','1',1,1,1,1,1),(432,'1',1,'1',1,1,'1','1','1',1,1,1,1,1);
 /*!40000 ALTER TABLE `kid` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -738,6 +742,28 @@ LOCK TABLES `volun_to_kid` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `volun_to_mission`
+--
+
+DROP TABLE IF EXISTS `volun_to_mission`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `volun_to_mission` (
+  `volun_id` bigint DEFAULT NULL COMMENT '志愿者ID',
+  `mission_id` bigint DEFAULT NULL COMMENT '任务ID'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='志愿者与任务关系';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `volun_to_mission`
+--
+
+LOCK TABLES `volun_to_mission` WRITE;
+/*!40000 ALTER TABLE `volun_to_mission` DISABLE KEYS */;
+/*!40000 ALTER TABLE `volun_to_mission` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `volunteer`
 --
 
@@ -746,6 +772,7 @@ DROP TABLE IF EXISTS `volunteer`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `volunteer` (
   `id` bigint NOT NULL COMMENT '唯一ID',
+  `name` varchar(30) DEFAULT NULL COMMENT '姓名',
   `gender` tinyint DEFAULT NULL COMMENT '0表示女性，1表示男性',
   `age` int DEFAULT NULL COMMENT '年龄',
   `birthday` date DEFAULT NULL COMMENT '生日',
@@ -775,4 +802,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-05 22:35:38
+-- Dump completed on 2023-11-07 20:46:41

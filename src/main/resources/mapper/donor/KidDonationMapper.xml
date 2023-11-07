@@ -10,4 +10,8 @@
         <result column="time" property="time" />
     </resultMap>
 
+    <select id="selectTotalAmount" resultType="java.lang.Integer">
+        select sum(amount) from donor_kid_donation;
+    </select>
+
 </mapper>

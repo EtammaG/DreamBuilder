@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.neu.dreambuilder.mapper.donor.DonationStatisticMapper">
+
+    <sql id="selectStaFromKidDonation">
+        select donor_id, count(amount) c, sum(amount) s from donor_kid_donation group by donor_id
+    </sql>
+
+    <sql id="selectStaFromProjectDonation">
+        select donor_id, count(amount) c, sum(amount) s from donor_project_donation p group by donor_id
+    </sql>
+
+    <select id="selectStaByDonorId" resultType="com.neu.dreambuilder.dto.donor.DonationStaDto">
+        select nickname, times, amount, `rank`
+        from (select id, nickname, times, amount, @Noo := @Noo + 1 as `rank`
+            from (
+                select d.id, d.nickname, k.c + p.c times, k.s + p.s amount
+                    from (<include refid="selectStaFromKidDonation"/>) as k
+                    join (<include refid="selectStaFromProjectDonation"/>) as p
+                        on k.donor_id = p.donor_id
+                    join donor d
+                        on k.donor_id = d.id
+                    join (select @Noo := 0) as n
+                order by amount desc
+            ) x
+        ) y
+        where id = #{donorId};
+    </select>
+
+    <select id="selectRank" resultType="com.neu.dreambuilder.dto.donor.DonationStaDto">
+        select d.nickname, k.c + p.c times, k.s + p.s amount
+            from (<include refid="selectStaFromKidDonation"/>) as k
+            join (<include refid="selectStaFromProjectDonation"/>) as p
+                on k.donor_id = p.donor_id
+            join donor d
+                on k.donor_id = d.id
+        order by amount desc
+        limit #{num};
+    </select>
+
+    <select id="selectRankByDate" resultType="com.neu.dreambuilder.dto.donor.DonationStaDto">
+        select d.nickname, k.c + p.c times, k.s + p.s amount
+            from (<include refid="selectStaFromKidDonation"/>  where date between #{startDate} and #{endDate}) as k
+            join (<include refid="selectStaFromProjectDonation"/>  where date between #{startDate} and #{endDate}) as p
+                on k.donor_id = p.donor_id
+            join donor d
+                on k.donor_id = d.id
+        order by amount desc
+        limit #{num};
+    </select>
+
+    <select id="selectNumOfKid" resultType="java.lang.Integer">
+        select count(distinct kid_id)
+        from (
+            (select kid_id from donor_kid_donation)
+            union
+            (select kid_id from donor_kid_thing)
+        );
+    </select>
+
+</mapper>

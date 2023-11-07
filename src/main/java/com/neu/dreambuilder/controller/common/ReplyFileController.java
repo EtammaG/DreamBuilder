@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,7 +38,7 @@ public class ReplyFileController {
     }
 
     @PostMapping
-//    @PreAuthorize("hasAuthority('KID')")
+    @PreAuthorize("hasAuthority('KID')")
     public Result<String> upload(MultipartFile file) {
         String filename = file.getOriginalFilename();
         String fileType = filename.substring(filename.lastIndexOf("."));
@@ -52,7 +53,7 @@ public class ReplyFileController {
 
 
     @GetMapping(value = "/{filename}")
-//    @PreAuthorize("hasAuthority('LOGIN')")
+    @PreAuthorize("hasAuthority('LOGIN')")
     public ResponseEntity<byte[]> download(@PathVariable String filename) {
         try (FileInputStream is = filService.get(filename)) {
             byte[] bytes = new byte[is.available()];

@@ -1,7 +1,7 @@
 package com.neu.dreambuilder.mapper.donor;
 
-import com.neu.dreambuilder.entity.donor.KidDonation;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.neu.dreambuilder.entity.donor.KidDonation;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -15,4 +15,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface KidDonationMapper extends BaseMapper<KidDonation> {
 
+    Integer selectTotalAmount();
 }

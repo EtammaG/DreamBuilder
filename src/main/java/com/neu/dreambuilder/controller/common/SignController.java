@@ -10,12 +10,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.TimeUnit;
 
 @RestController
-
 @Api(tags = "登录登出相关接口")
-
 public class SignController {
 
     private final SignService signService;
@@ -27,7 +25,7 @@ public class SignController {
 
     @PostMapping("/login")
     @PreAuthorize("isAnonymous()")
-    @LimitRequest(count = 20)
+    @LimitRequest(timesInAUnit = 20, unit = TimeUnit.MINUTES)
     public Result<String> login(String username, String password, @ApiParam("1表示donor，2表示kid，3表示volunteer") int type) {
         String jwt = signService.login(username, password, type);
         return jwt == null
@@ -37,7 +35,7 @@ public class SignController {
 
     @PostMapping("/logout")
     @PreAuthorize("hasAuthority('LOGIN')")
-    public Result<Object> logout(HttpServletRequest request) {
+    public Result<Object> logout() {
         signService.logout();
         return Result.success();
     }

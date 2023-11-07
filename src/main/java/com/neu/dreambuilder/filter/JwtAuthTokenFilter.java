@@ -21,10 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 @Slf4j
 @Component
@@ -32,50 +28,41 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
+    @Value("${dream-builder.redis.prefix.limit-times}")
+    private String REDIS_PREFIX_LIMIT_TIMES;
+
     @Value("${dream-builder.sys.sign-in-duration}")
     private Duration SIGNIN_DURATION;
+
+    @Value("${dream-builder.sys.limit-times-in-a-minute}")
+    private int LIMIT_TIMES_IN_A_MINUTE;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String token = request.getHeader("token");
-        if(!StringUtils.hasText(token)) {
+        if (!StringUtils.hasText(token)) {
             filterChain.doFilter(request, response);
             return;
         }
         String redisKey = JwtUtil.parseJWT(token).getBody().getSubject();
         IUserDetails userDetails = JSON.parseObject(stringRedisTemplate.opsForValue().get(redisKey), IUserDetails.class);
-        if(userDetails == null) {
+        if (userDetails == null) {
             log.warn("illegal token");
             filterChain.doFilter(request, response);
             return;
         }
 
-        String redisLimitKey = "limit:" + redisKey;
-
-
-        //根据id禁止频繁发送请求
-        if (stringRedisTemplate.opsForHash().entries(redisKey).isEmpty()){
-            Map<String,Object> hashMap = new HashMap<>();
-            hashMap.put("time", LocalDateTime.now());
-            hashMap.put("count",0);
-            stringRedisTemplate.opsForHash().putAll(redisKey,hashMap);
-        }else{
-            Map<Object, Object> entries = stringRedisTemplate.opsForHash().entries(redisKey);
-            LocalDateTime lasttime = (LocalDateTime) entries.get("time");
-            Duration duration = Duration.between(lasttime, LocalDateTime.now());
-            long minutes = duration.toMinutes();
-            if (minutes < 1){
-                Integer count =(Integer) entries.get("count");
-                if (count==99){
-                    throw new CustomException("请勿频繁操作");
-                }
-            }
-
+        String redisLimitKey = REDIS_PREFIX_LIMIT_TIMES + redisKey;
+        String count = stringRedisTemplate.opsForValue().get(redisLimitKey);
+        if (count == null) {
+            stringRedisTemplate.opsForValue().set(redisLimitKey, "1", Duration.ofMinutes(1));
+        } else {
+            int i = Integer.parseInt(count);
+            if (i > LIMIT_TIMES_IN_A_MINUTE)
+                throw new CustomException("请求次数过多，请稍后再试");
+            stringRedisTemplate.opsForValue().set(redisLimitKey, String.valueOf(i + 1));
         }
-
-
-
 
         stringRedisTemplate.expire(redisKey, SIGNIN_DURATION);
         SecurityContextHolder.getContext().setAuthentication(

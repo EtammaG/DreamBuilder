@@ -18,5 +18,13 @@
         <result column="rank_week_ago" property="rankWeekAgo" />
         <result column="weekrank_week_ago" property="weekrankWeekAgo" />
     </resultMap>
+    <select id="selectByIds" resultType="java.util.Map">
+        select *
+        from kid
+        where id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 
 </mapper>

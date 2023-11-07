@@ -1,11 +1,15 @@
 package com.neu.dreambuilder.common.annotation;
 
 import java.lang.annotation.*;
+import java.util.concurrent.TimeUnit;
 
 @Documented
-@Target(ElementType.METHOD) // 说明该注解只能放在方法上面
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LimitRequest {
-    long time() default 60000; // 限制时间 单位：毫秒
-    int count() default 1; // 允许请求的次数
+
+    int timesInAUnit() default 1;
+
+    TimeUnit unit() default TimeUnit.MILLISECONDS;
+
 }

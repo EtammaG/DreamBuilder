@@ -10,5 +10,13 @@
         <result column="pic" property="pic" />
         <result column="location" property="location" />
     </resultMap>
+    <select id="selectByIds" resultType="java.util.Map">
+        select *
+        from donor_project
+        where id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
 
 </mapper>
