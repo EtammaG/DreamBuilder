@@ -26,5 +26,10 @@
             #{id}
         </foreach>
     </select>
+    <select id="selectRandom" resultMap="BaseResultMap">
+        select *
+        from kid
+        limit #{num}
+    </select>
 
 </mapper>

@@ -1,7 +1,7 @@
 package com.neu.dreambuilder.mapper.kid;
 
-import com.neu.dreambuilder.entity.kid.Kid;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.neu.dreambuilder.entity.kid.Kid;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -22,4 +22,5 @@ public interface KidMapper extends BaseMapper<Kid> {
     @MapKey("id")
     Map<Long, Kid> selectByIds(List<Long> ids);
 
+    List<Kid> selectRandom(int num);
 }

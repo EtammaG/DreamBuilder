@@ -16,7 +16,7 @@
         where to_id = #{toId}
           and from_id = #{fromId}
           and type = #{type}
-        order by time;
+        order by time
     </select>
 
 </mapper>

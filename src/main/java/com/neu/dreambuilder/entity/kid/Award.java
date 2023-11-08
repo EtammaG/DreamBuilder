@@ -29,6 +29,9 @@ public class Award {
     @ApiModelProperty("描述")
     private String description;
 
+    @ApiModelProperty("图片地址")
+    private String pic;
+
     @ApiModelProperty("需要点数")
     private Integer point;
 

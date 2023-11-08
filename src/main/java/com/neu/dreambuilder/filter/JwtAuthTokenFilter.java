@@ -28,13 +28,13 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
     @Resource
     private StringRedisTemplate stringRedisTemplate;
 
-    @Value("${dream-builder.redis.prefix.limit-times}")
-    private String REDIS_PREFIX_LIMIT_TIMES;
+    @Value("${dream-builder.redis.prefix.limit-id}")
+    private String REDIS_PREFIX_LIMIT_ID;
 
     @Value("${dream-builder.sys.sign-in-duration}")
     private Duration SIGNIN_DURATION;
 
-    @Value("${dream-builder.sys.limit-times-in-a-minute}")
+    @Value("${dream-builder.sys.id-limit-times-in-a-minute}")
     private int LIMIT_TIMES_IN_A_MINUTE;
 
     @Override
@@ -53,7 +53,7 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        String redisLimitKey = REDIS_PREFIX_LIMIT_TIMES + redisKey;
+        String redisLimitKey = REDIS_PREFIX_LIMIT_ID + redisKey;
         String count = stringRedisTemplate.opsForValue().get(redisLimitKey);
         if (count == null) {
             stringRedisTemplate.opsForValue().set(redisLimitKey, "1", Duration.ofMinutes(1));

@@ -7,5 +7,8 @@
         <id column="id" property="id" />
         <result column="name" property="name" />
     </resultMap>
+    <select id="selectAll" resultType="com.neu.dreambuilder.entity.kid.AwardType">
+        select * from kid_award_type
+    </select>
 
 </mapper>

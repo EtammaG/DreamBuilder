@@ -3,11 +3,13 @@ package com.neu.dreambuilder.dto.kid;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @ApiModel(value = "KidMisDto", description = "孩子任务相关的信息")
 public class KidMisDto {
 

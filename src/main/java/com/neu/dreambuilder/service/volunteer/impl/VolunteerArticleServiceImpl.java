@@ -2,7 +2,6 @@ package com.neu.dreambuilder.service.volunteer.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.neu.dreambuilder.dto.CommentDto;
-import com.neu.dreambuilder.dto.PageExample;
 import com.neu.dreambuilder.dto.Result;
 import com.neu.dreambuilder.dto.volunteer.ArticleDto;
 import com.neu.dreambuilder.entity.volunteer.Article;
@@ -18,12 +17,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import javax.xml.stream.events.Comment;
-import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.neu.dreambuilder.dto.Result.success;
 
 @Service
 public class VolunteerArticleServiceImpl implements VolunteerArticleService {
@@ -32,14 +27,13 @@ public class VolunteerArticleServiceImpl implements VolunteerArticleService {
     private ArticleMapper articleMapper;
 
     @Resource
-     private ArticleCommentMapper commentMapper;
+    private ArticleCommentMapper commentMapper;
 
     @Resource
     private VolunteerMapper volunteerMapper;
 
     @Resource
     private ArticleLikeMapper articleLikeMapper;
-
 
 
     @Override
@@ -50,11 +44,11 @@ public class VolunteerArticleServiceImpl implements VolunteerArticleService {
 
         List<Article> articles = articleMapper.selectList(articleQuery);
         ArticleDto articleDto = new ArticleDto();
-        BeanUtils.copyProperties(articles.get(0),articleDto);
+        BeanUtils.copyProperties(articles.get(0), articleDto);
 
         Long articleId = articleDto.getId();
         LambdaQueryWrapper<ArticleComment> commentQuery = new LambdaQueryWrapper<>();
-        commentQuery.eq(ArticleComment::getArticleId,articleId);
+        commentQuery.eq(ArticleComment::getArticleId, articleId);
         Integer count = commentMapper.selectCount(commentQuery);
         articleDto.setAmount(count);
 
@@ -69,8 +63,8 @@ public class VolunteerArticleServiceImpl implements VolunteerArticleService {
         LambdaQueryWrapper<Article> articleQuery = new LambdaQueryWrapper<>();
         articleQuery.orderByDesc(Article::getArticleTime);
 
-        if (title!=null||title!=""){
-               articleQuery.like(Article::getTitle,"%"+title+"%");
+        if (title != null || title != "") {
+            articleQuery.like(Article::getTitle, "%" + title + "%");
         }
 
         List<Article> articles = articleMapper.selectList(articleQuery);
@@ -92,7 +86,7 @@ public class VolunteerArticleServiceImpl implements VolunteerArticleService {
     @Override
     public Result<Article> getArticleDetails(long id) {
         LambdaQueryWrapper<Article> articleQuery = new LambdaQueryWrapper<>();
-        articleQuery.eq(Article::getId,id);
+        articleQuery.eq(Article::getId, id);
         Article article = articleMapper.selectOne(articleQuery);
 
         return Result.success(article);
@@ -101,7 +95,7 @@ public class VolunteerArticleServiceImpl implements VolunteerArticleService {
     @Override
     public Result<List<CommentDto>> getArticleComments(long id) {
         LambdaQueryWrapper<ArticleComment> commentQuery = new LambdaQueryWrapper<>();
-        commentQuery.eq(ArticleComment::getArticleId,id);
+        commentQuery.eq(ArticleComment::getArticleId, id);
         commentQuery.orderByDesc(ArticleComment::getTime);
 
         List<ArticleComment> articleComments = commentMapper.selectList(commentQuery);
@@ -128,7 +122,7 @@ public class VolunteerArticleServiceImpl implements VolunteerArticleService {
     public List<ArticleDto> getArticleColleted(Long id) {
 
         LambdaQueryWrapper<ArticleLike> articleLikeQuery = new LambdaQueryWrapper<>();
-        articleLikeQuery.eq(ArticleLike::getVolunId,id);
+        articleLikeQuery.eq(ArticleLike::getVolunId, id);
         List<ArticleLike> articleLikes = articleLikeMapper.selectList(articleLikeQuery);
 
         List<ArticleDto> articleDtos = articleLikes.stream().map(articleLike -> {

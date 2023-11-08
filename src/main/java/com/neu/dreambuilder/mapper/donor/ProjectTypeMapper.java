@@ -4,6 +4,8 @@ import com.neu.dreambuilder.entity.donor.ProjectType;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
  * <p>
  * 项目类别 Mapper 接口
@@ -15,4 +17,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ProjectTypeMapper extends BaseMapper<ProjectType> {
 
+    List<ProjectType> selectAll();
 }

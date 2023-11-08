@@ -2,6 +2,7 @@ package com.neu.dreambuilder.controller.donor;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.neu.dreambuilder.common.utils.BaseContext;
 import com.neu.dreambuilder.dto.PageExample;
 import com.neu.dreambuilder.dto.Result;
 import com.neu.dreambuilder.dto.donor.DonationStaDto;
@@ -22,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "捐赠者端捐助相关接口")
 public class DonorDonationController {
 
-    private final DonorDonationService  donorDonationService;
+    private final DonorDonationService donorDonationService;
 
     @Autowired
     public DonorDonationController(DonorDonationService donorDonationService) {
@@ -31,50 +32,50 @@ public class DonorDonationController {
 
     @PostMapping("/money")
     @ApiOperation("捐助善款")
-    public Result<Object> money(@ApiParam(value = "孩子ID") String kidId, @ApiParam(value = "金额") int amount) {
-        donorDonationService.addMoney(kidId, amount);
+    public Result<Object> money(@ApiParam(value = "孩子ID") Long kidId, @ApiParam(value = "金额") int amount) {
+        donorDonationService.addMoney(BaseContext.getCurrentIUserDetails().getId(), kidId, amount);
         return Result.success();
     }
 
     @PostMapping("/thing")
     @ApiOperation("捐助物品")
-    public Result<Object> thing(@ApiParam(value = "孩子ID") String kidId, @ApiParam(value = "物品名称") String name) {
-        donorDonationService.addThing(kidId, name);
+    public Result<Object> thing(@ApiParam(value = "孩子ID") Long kidId, @ApiParam(value = "物品名称") String name) {
+        donorDonationService.addThing(BaseContext.getCurrentIUserDetails().getId(), kidId, name);
         return Result.success();
     }
 
     @PostMapping("/project")
     @ApiOperation("对项目捐助")
-    public Result<Object> project(@ApiParam(value = "项目ID") String projectId, @ApiParam(value = "金额") int amount) {
-        donorDonationService.addProject(projectId, amount);
+    public Result<Object> project(@ApiParam(value = "项目ID") Long projectId, @ApiParam(value = "金额") int amount) {
+        donorDonationService.addProject(BaseContext.getCurrentIUserDetails().getId(), projectId, amount);
         return Result.success();
     }
 
     @GetMapping("/statistic")
     @ApiOperation("获得捐助统计信息")
     public Result<DonationStaDto> statistic() {
-        return Result.success(donorDonationService.getStatistic());
+        return Result.success(donorDonationService.getStatistic(BaseContext.getCurrentIUserDetails().getId()));
     }
 
     @PostMapping("/money/list")
     @ApiOperation("获取善款捐赠记录")
     public Result<PageInfo<KidDonationDto>> getMoney(@RequestBody PageExample<Object> pageExample) {
         PageHelper.startPage(pageExample.getPageNum(), pageExample.getPageSize());
-        return Result.success(new PageInfo<>(donorDonationService.getMoney()));
+        return Result.success(new PageInfo<>(donorDonationService.getMoney(BaseContext.getCurrentIUserDetails().getId())));
     }
 
     @PostMapping("/thing/list")
     @ApiOperation("获取物品捐赠记录")
     public Result<PageInfo<KidThingDto>> getThing(@RequestBody PageExample<Object> pageExample) {
         PageHelper.startPage(pageExample.getPageNum(), pageExample.getPageSize());
-        return Result.success(new PageInfo<>(donorDonationService.getThing()));
+        return Result.success(new PageInfo<>(donorDonationService.getThing(BaseContext.getCurrentIUserDetails().getId())));
     }
 
     @PostMapping("/project/list")
     @ApiOperation("获取对项目捐赠记录")
     public Result<PageInfo<ProjectDonationDto>> getProject(@RequestBody PageExample<Object> pageExample) {
         PageHelper.startPage(pageExample.getPageNum(), pageExample.getPageSize());
-        return Result.success(new PageInfo<>(donorDonationService.getProject()));
+        return Result.success(new PageInfo<>(donorDonationService.getProject(BaseContext.getCurrentIUserDetails().getId())));
     }
 
 }

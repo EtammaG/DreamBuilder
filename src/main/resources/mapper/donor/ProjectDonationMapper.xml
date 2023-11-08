@@ -11,7 +11,7 @@
     </resultMap>
 
     <select id="selectTotalAmount" resultType="java.lang.Integer">
-        select sum(amount) from donor_project_donation;
+        select sum(amount) from donor_project_donation
     </select>
 
 </mapper>

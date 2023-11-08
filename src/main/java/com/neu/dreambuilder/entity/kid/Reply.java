@@ -3,6 +3,7 @@ package com.neu.dreambuilder.entity.kid;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@AllArgsConstructor
 @TableName("kid_reply")
 @ApiModel(value = "Reply对象", description = "对任务的提交")
 public class Reply {
