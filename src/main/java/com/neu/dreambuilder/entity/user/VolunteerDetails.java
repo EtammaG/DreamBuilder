@@ -13,6 +13,8 @@ public class VolunteerDetails implements IUserDetails{
 
     private List<String> authorities;
 
+
+
     public VolunteerDetails(UserVolunteer userVolunteer) {
         this.userVolunteer = userVolunteer;
         this.authorities = new ArrayList<>();

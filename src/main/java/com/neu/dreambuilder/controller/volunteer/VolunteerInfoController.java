@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping("/volunteer")
-@PreAuthorize("hasAuthority('VOLUNTEER')")
+//@PreAuthorize("hasAuthority('VOLUNTEER')")
 @Api(tags = "志愿者端相关信息接口")
 public class VolunteerInfoController {
 

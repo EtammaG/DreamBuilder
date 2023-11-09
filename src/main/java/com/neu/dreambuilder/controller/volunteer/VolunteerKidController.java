@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/volunteer/kid")
-@PreAuthorize("hasAuthority('VOLUNTEER')")
+//@PreAuthorize("hasAuthority('VOLUNTEER')")
 @Api(tags = "志愿者端孩子信息接口")
 public class VolunteerKidController {
 
@@ -30,8 +30,7 @@ public class VolunteerKidController {
     @GetMapping("/random/recent")
     @ApiOperation(value = "主页面孩子近况")
     public Result<KidRecDto> getRandom(){
-        volunteerKidService.getKidRandomRec();
-        return null;
+        return Result.success(volunteerKidService.getKidRandomRec());
     }
 
     /**

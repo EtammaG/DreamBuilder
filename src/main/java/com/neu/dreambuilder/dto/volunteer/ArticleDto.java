@@ -13,4 +13,6 @@ public class ArticleDto extends Article {
     @ApiModelProperty("文章的评论数")
     private int amount;
 
+
+
 }

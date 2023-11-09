@@ -7,6 +7,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +24,7 @@ public class SignController {
         this.signService = signService;
     }
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     @PreAuthorize("isAnonymous()")
     @LimitRequest(timesInAUnit = 20, unit = TimeUnit.MINUTES)
     public Result<String> login(String username, String password, @ApiParam("1表示donor，2表示kid，3表示volunteer") int type) {

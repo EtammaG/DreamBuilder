@@ -6,9 +6,11 @@ spring:
     name: dream_builder
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.200.100:3306/dream_builder?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+#    url: jdbc:mysql://localhost:3306/dream_builder?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/dream_builder?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+
     username: root
-    password: Root_123
+    password: "031125"
     type: com.alibaba.druid.pool.DruidDataSource
   web:
     resources:
@@ -16,15 +18,17 @@ spring:
   mvc:
     static-path-pattern: /**
   redis:
-    host: 192.168.200.100
+    host: localhost
     port: 6379
-    password: 123456
+#    password: 123456
     jedis:
       pool:
         max-active: 8
         max-wait: -1ms
         max-idle: 8
         min-idle: 0
+    prefix:
+      limit-time: 1m
   servlet:
     multipart:
       max-file-size: 50MB
@@ -60,6 +64,9 @@ dream-builder:
       login-donor: 'login:donor:'
       login-kid: 'login:kid:'
       login-volunteer: 'login:volunteer:'
+      limit-times: 1m
+      limit-ip: 1
   sys:
     sign-in-duration: P1D
     file-save-path: D:/Empty/
+    limit-times-in-a-minute: 5

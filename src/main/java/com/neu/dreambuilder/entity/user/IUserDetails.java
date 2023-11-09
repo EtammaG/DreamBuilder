@@ -6,4 +6,5 @@ public interface IUserDetails extends UserDetails {
     Long getId();
 
     int getType();
+
 }
