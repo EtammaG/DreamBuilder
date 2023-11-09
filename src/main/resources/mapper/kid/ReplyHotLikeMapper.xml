@@ -7,5 +7,8 @@
         <result column="hot_id" property="hotId" />
         <result column="kid_id" property="kidId" />
     </resultMap>
+    <select id="cat" resultType="java.lang.Integer">
+        select 1 from kid_reply_hot_like where kid_id = #{kidId} and hot_id = #{hotId} limit 1
+    </select>
 
 </mapper>

@@ -4,6 +4,7 @@ import com.neu.dreambuilder.dto.CommentDto;
 import com.neu.dreambuilder.dto.kid.HotReplyDto;
 import com.neu.dreambuilder.entity.kid.ReplyHotComment;
 import com.neu.dreambuilder.entity.kid.ReplyHotLike;
+import com.neu.dreambuilder.exception.bean.CustomException;
 import com.neu.dreambuilder.mapper.kid.HotReplyMapper;
 import com.neu.dreambuilder.mapper.kid.ReplyHotCommentMapper;
 import com.neu.dreambuilder.mapper.kid.ReplyHotLikeMapper;
@@ -36,7 +37,9 @@ public class HotReplyServiceImpl implements HotReplyService {
 
     @Override
     public void like(Long id, long hotId) {
-        replyHotLikeMapper.insert(new ReplyHotLike(hotId, id));
+        ReplyHotLike replyHotLike = new ReplyHotLike(hotId, id);
+        if(replyHotLikeMapper.cat(replyHotLike) != null) throw new CustomException("不能重复点赞");
+        replyHotLikeMapper.insert(replyHotLike);
     }
 
     @Override

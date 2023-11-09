@@ -3,6 +3,7 @@ package com.neu.dreambuilder.service.kid.impl;
 import com.neu.dreambuilder.dto.kid.AwardDto;
 import com.neu.dreambuilder.dto.kid.AwardExchangeDto;
 import com.neu.dreambuilder.entity.kid.*;
+import com.neu.dreambuilder.exception.bean.CustomException;
 import com.neu.dreambuilder.mapper.kid.*;
 import com.neu.dreambuilder.service.kid.AwardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +38,17 @@ public class AwardServiceImpl implements AwardService {
 
     @Override
     public List<AwardDto> search(Long id, AwardExample example) {
-        return awardInfoMapper.search(id, example.getName(), example.getTypeId());
+        String name = example.getName();
+        name = name == null ? "%%" : "%" + name + "%";
+        if(example.getTypeId() == null) throw new CustomException("奖品类别不能为空");
+        return awardInfoMapper.search(id, name, example.getTypeId());
     }
 
     @Override
     public void like(Long id, long awardId) {
-        awardLikeMapper.insert(new AwardLike(awardId, id));
+        AwardLike awardLike = new AwardLike(awardId, id);
+        if(awardLikeMapper.cat(awardLike) != null) throw new CustomException("不能重复收藏");
+        awardLikeMapper.insert(awardLike);
     }
 
     @Override

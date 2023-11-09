@@ -6,8 +6,8 @@
 <mapper namespace="com.neu.dreambuilder.mapper.kid.HotReplyMapper">
 
     <select id="selectAll" resultType="com.neu.dreambuilder.dto.kid.HotReplyDto">
-        select hot.id, kid.name, mis.title, mis.description, mis.level, rep.media, rep.score, rep.comment,
-        exists(select 1 from kid_reply_hot_like lik where lik.hot_id = hot.id and kid_id = #{id})
+        select hot.id hotId, kid.name kidName, mis.date, mis.title, mis.description, mis.level, rep.media, rep.score, rep.comment,
+        exists(select 1 from kid_reply_hot_like lik where lik.hot_id = hot.id and kid_id = #{id}) `liked`
         from kid_to_mission ktm
         join kid_reply_hot hot
         on hot.reply_id = ktm.reply_id

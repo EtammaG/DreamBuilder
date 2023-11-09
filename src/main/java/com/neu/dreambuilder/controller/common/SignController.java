@@ -26,7 +26,7 @@ public class SignController {
         this.signService = signService;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/signin")
     @PreAuthorize("isAnonymous()")
     @LimitRequest(timesInAUnit = 20, unit = TimeUnit.MINUTES)
     //public Result<String> login(String username, String password, @ApiParam("1表示donor，2表示kid，3表示volunteer") int type) {
@@ -40,7 +40,7 @@ public class SignController {
                 : Result.success(jwt);
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/signout")
     @PreAuthorize("hasAuthority('LOGIN')")
     public Result<Object> logout() {
         signService.logout(BaseContext.getCurrentIUserDetails());

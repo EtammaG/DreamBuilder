@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class HotReplyDto {
 
     @ApiModelProperty("热门ID")
-    private String hotId;
+    private Long hotId;
 
     @ApiModelProperty("小孩姓名")
     private String kidName;
@@ -37,7 +37,7 @@ public class HotReplyDto {
     private Integer score;
 
     @ApiModelProperty("对提交的评语")
-    private Integer comment;
+    private String comment;
 
     @ApiModelProperty("是否已经被点赞")
     private boolean liked;

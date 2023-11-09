@@ -61,7 +61,7 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             int i = Integer.parseInt(count);
             if (i > LIMIT_TIMES_IN_A_MINUTE)
                 throw new CustomException("请求次数过多，请稍后再试");
-            stringRedisTemplate.opsForValue().set(redisLimitKey, String.valueOf(i + 1));
+            stringRedisTemplate.opsForValue().set(redisLimitKey, String.valueOf(i + 1), Duration.ofMinutes(1));
         }
 
         stringRedisTemplate.expire(redisKey, SIGNIN_DURATION);

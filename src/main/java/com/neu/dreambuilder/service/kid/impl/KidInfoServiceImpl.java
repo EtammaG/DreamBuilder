@@ -107,7 +107,7 @@ public class KidInfoServiceImpl implements KidInfoService {
         int optMissionDone = 0;
         for (Map<String, Object> map : maps) {
             Integer type = (Integer) map.get("type");
-            String replyId = (String) map.get("reply_id");
+            Long replyId = (Long) map.get("reply_id");
             if (type == 0 && replyId == null) optMissionWaiting++;
             if (type == 1 && replyId == null) subMissionWaiting++;
             if (type == 0 && replyId != null) optMissionDone++;

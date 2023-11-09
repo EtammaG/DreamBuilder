@@ -1,5 +1,6 @@
 package com.neu.dreambuilder.service.kid.impl;
 
+import com.neu.dreambuilder.common.utils.IdWorker;
 import com.neu.dreambuilder.entity.kid.Reply;
 import com.neu.dreambuilder.entity.kid.ToMission;
 import com.neu.dreambuilder.mapper.kid.ReplyInfoMapper;
@@ -30,7 +31,7 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public void add(Long id, Long missionId, String replyMedia) {
-        Long replyId = 1L;
+        Long replyId = IdWorker.nextId();
         replyMapper.insert(new Reply(replyId, replyMedia, null, null));
         toMissionMapper.insert(new ToMission(id, missionId, replyId));
     }

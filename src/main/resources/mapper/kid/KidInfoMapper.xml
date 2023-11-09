@@ -29,12 +29,12 @@
     </select>
     <select id="selectRankById" resultType="java.lang.Integer">
         select `rank`
-        from (select id, dense_rank() over (order by total_point desc ) `rank` from kid)
+        from (select id, dense_rank() over (order by total_point desc ) `rank` from kid) x
         where id = #{id}
     </select>
     <select id="selectWeekrankById" resultType="java.lang.Integer">
         select `rank`
-        from (select id, dense_rank() over (order by total_point - point_week_ago desc ) `rank` from kid)
+        from (select id, dense_rank() over (order by total_point - point_week_ago desc ) `rank` from kid) x
         where id = #{id}
     </select>
 
