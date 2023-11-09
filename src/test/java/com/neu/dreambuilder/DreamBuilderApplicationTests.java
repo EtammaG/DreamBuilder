@@ -13,7 +13,9 @@ class DreamBuilderApplicationTests {
 
     public static void main(String[] args) {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        System.out.println(bCryptPasswordEncoder.encode("vvvvvv"));
         System.out.println(bCryptPasswordEncoder.encode("dddddd"));
+        System.out.println(bCryptPasswordEncoder.encode("kkkkkk"));
     }
 
 }

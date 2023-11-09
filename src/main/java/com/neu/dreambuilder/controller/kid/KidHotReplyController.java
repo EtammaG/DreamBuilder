@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/kid/hot/reply")
@@ -35,7 +36,9 @@ public class KidHotReplyController {
 
     @PostMapping("/like")
     @ApiOperation("对热门提交点赞")
-    public Result<Object> like(@ApiParam(value = "热门提交的ID") String hotId) {
+    public Result<Object> like(@RequestBody Map<String, String> map) {
+        //    public Result<Object> like(@ApiParam(value = "热门提交的ID") String hotId) {
+        String hotId = map.get("hotId");
         hotReplyService.like(BaseContext.getCurrentIUserDetails().getId(), Long.parseLong(hotId));
         return Result.success();
     }
@@ -48,9 +51,12 @@ public class KidHotReplyController {
 
     @PostMapping("/comment")
     @ApiOperation("对热门提交评论")
-    public Result<Object> addComment(
-            @ApiParam(value = "热门提交的ID") String hotId,
-            @ApiParam(value = "评论内容文本") String comment) {
+    public Result<Object> addComment(@RequestBody Map<String, String> map) {
+        //    public Result<Object> addComment(
+        //            @ApiParam(value = "热门提交的ID") String hotId,
+        //            @ApiParam(value = "评论内容文本") String comment) {
+        String hotId = map.get("hotId");
+        String comment = map.get("comment");
         hotReplyService.addComment(BaseContext.getCurrentIUserDetails().getId(), Long.parseLong(hotId), comment);
         return Result.success();
     }

@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/donor/donation")
 @PreAuthorize("hasAuthority('DONOR')")
@@ -32,22 +34,31 @@ public class DonorDonationController {
 
     @PostMapping("/money")
     @ApiOperation("捐助善款")
-    public Result<Object> money(@ApiParam(value = "孩子ID") Long kidId, @ApiParam(value = "金额") int amount) {
-        donorDonationService.addMoney(BaseContext.getCurrentIUserDetails().getId(), kidId, amount);
+    public Result<Object> money(@RequestBody Map<String, String> map) {
+    //public Result<Object> money(@ApiParam(value = "孩子ID") Long kidId, @ApiParam(value = "金额") int amount) {
+        String kidId = map.get("kidId");
+        String amount = map.get("amount");
+        donorDonationService.addMoney(BaseContext.getCurrentIUserDetails().getId(), Long.parseLong(kidId), Integer.parseInt(amount));
         return Result.success();
     }
 
     @PostMapping("/thing")
     @ApiOperation("捐助物品")
-    public Result<Object> thing(@ApiParam(value = "孩子ID") Long kidId, @ApiParam(value = "物品名称") String name) {
-        donorDonationService.addThing(BaseContext.getCurrentIUserDetails().getId(), kidId, name);
+    public Result<Object> thing(@RequestBody Map<String, String> map) {
+    //public Result<Object> thing(@ApiParam(value = "孩子ID") Long kidId, @ApiParam(value = "物品名称") String name) {
+        String kidId = map.get("kidId");
+        String name = map.get("name");
+        donorDonationService.addThing(BaseContext.getCurrentIUserDetails().getId(), Long.valueOf(kidId), name);
         return Result.success();
     }
 
     @PostMapping("/project")
     @ApiOperation("对项目捐助")
-    public Result<Object> project(@ApiParam(value = "项目ID") Long projectId, @ApiParam(value = "金额") int amount) {
-        donorDonationService.addProject(BaseContext.getCurrentIUserDetails().getId(), projectId, amount);
+    public Result<Object> project(@RequestBody Map<String, String> map) {
+    //public Result<Object> project(@ApiParam(value = "项目ID") Long projectId, @ApiParam(value = "金额") int amount) {
+        String projectId = map.get("projectId");
+        String amount = map.get("amount");
+        donorDonationService.addProject(BaseContext.getCurrentIUserDetails().getId(), Long.parseLong(projectId), Integer.parseInt(amount));
         return Result.success();
     }
 

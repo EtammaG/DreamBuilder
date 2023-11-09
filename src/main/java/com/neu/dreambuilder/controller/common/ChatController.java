@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("chat")
@@ -41,9 +42,12 @@ public class ChatController {
     }
 
     @PostMapping("/send")
-    public Result<Object> send(Long id, String msg) {
+    public Result<Object> send(@RequestBody Map<String, String> map) {
+    //public Result<Object> send(Long id, String msg) {
+        String id = map.get("id");
+        String msg = map.get("msg");
         try {
-            chatService.send(id, msg);
+            chatService.send(Long.valueOf(id), msg);
             return Result.success();
         } catch (IOException e) {
             return Result.error("发送信息失败");

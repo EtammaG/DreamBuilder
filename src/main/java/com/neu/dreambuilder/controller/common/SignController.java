@@ -9,8 +9,10 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -27,8 +29,12 @@ public class SignController {
     @PostMapping("/login")
     @PreAuthorize("isAnonymous()")
     @LimitRequest(timesInAUnit = 20, unit = TimeUnit.MINUTES)
-    public Result<String> login(String username, String password, @ApiParam("1表示donor，2表示kid，3表示volunteer") int type) {
-        String jwt = signService.login(username, password, type);
+    //public Result<String> login(String username, String password, @ApiParam("1表示donor，2表示kid，3表示volunteer") int type) {
+    public Result<String> login(@RequestBody Map<String, String> map) {
+        String username = map.get("username");
+        String password = map.get("password");
+        String type = map.get("type");
+        String jwt = signService.login(username, password, Integer.parseInt(type));
         return jwt == null
                 ? Result.error("账号或密码错误")
                 : Result.success(jwt);

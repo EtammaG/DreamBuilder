@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/kid/reply")
 @PreAuthorize("hasAuthority('KID')")
@@ -32,10 +34,14 @@ public class KidReplyController {
 
     @PostMapping
     @ApiOperation("答题")
-    public Result<Object> post(
-            @ApiParam(value = "任务ID") String missionId,
-            @ApiParam(value = "提交的媒体文件地址") String replyMedia
-    ) {
+    public Result<Object> post(@RequestBody Map<String, String> map) {
+//        public Result<Object> post
+//    }(
+//            @ApiParam(value = "任务ID") String missionId,
+//            @ApiParam(value = "提交的媒体文件地址") String replyMedia
+//    ) {
+        String missionId = map.get("missionId");
+        String replyMedia = map.get("replyMedia");
         replyService.add(BaseContext.getCurrentIUserDetails().getId(), Long.valueOf(missionId), replyMedia);
         return Result.success();
     }
