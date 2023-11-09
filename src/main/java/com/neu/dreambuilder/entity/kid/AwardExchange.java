@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +18,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@AllArgsConstructor
 @TableName("kid_award_exchange")
 @ApiModel(value = "AwardExchange对象", description = "奖品的兑换记录")
 public class AwardExchange {

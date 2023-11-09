@@ -1,6 +1,7 @@
 package com.neu.dreambuilder.controller.common;
 
 import com.neu.dreambuilder.common.annotation.LimitRequest;
+import com.neu.dreambuilder.common.utils.BaseContext;
 import com.neu.dreambuilder.dto.Result;
 import com.neu.dreambuilder.service.common.SignService;
 import io.swagger.annotations.Api;
@@ -37,7 +38,7 @@ public class SignController {
     @PostMapping("/logout")
     @PreAuthorize("hasAuthority('LOGIN')")
     public Result<Object> logout() {
-        signService.logout();
+        signService.logout(BaseContext.getCurrentIUserDetails());
         return Result.success();
     }
 }

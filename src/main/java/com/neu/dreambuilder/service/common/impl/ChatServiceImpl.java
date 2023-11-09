@@ -1,6 +1,5 @@
 package com.neu.dreambuilder.service.common.impl;
 
-import com.neu.dreambuilder.common.utils.BaseContext;
 import com.neu.dreambuilder.entity.user.IUserDetails;
 import com.neu.dreambuilder.mapper.common.ChatMapper;
 import com.neu.dreambuilder.service.common.ChatService;
@@ -16,7 +15,7 @@ public class ChatServiceImpl implements ChatService {
 
     private final ChatMapper chatMapper;
 
-    private final HashMap<String, SseEmitter> session;
+    private final HashMap<Long, SseEmitter> session;
 
     @Autowired
     public ChatServiceImpl(ChatMapper chatMapper) {
@@ -25,33 +24,31 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public SseEmitter start() {
-        IUserDetails user = BaseContext.getCurrentIUserDetails();
+    public SseEmitter start(Long id) {
         SseEmitter sseEmitter = new SseEmitter();
-        session.put(user.getId().toString(), sseEmitter);
+        session.put(id, sseEmitter);
         return sseEmitter;
     }
 
     @Override
-    public void receive(String id) throws IOException {
-        IUserDetails user = BaseContext.getCurrentIUserDetails();
-        SseEmitter sseEmitter = session.get(user.getId().toString());
-        if (user.getType() != 2 && user.getType() != 3) return;
+    public void receive(Long fromId, IUserDetails to) throws IOException {
+        SseEmitter sseEmitter = session.get(to.getId());
+        if (to.getType() != 2 && to.getType() != 3) return;
         sseEmitter.send(
                 chatMapper.selectAllMsgByBoth(
-                        user.getId(),
-                        Long.valueOf(id),
-                        user.getType() == 2 ? 0 : 1));
+                        to.getId(),
+                        fromId,
+                        to.getType() == 2 ? 0 : 1));
     }
 
 
     @Override
-    public void send(String id, String msg) throws IOException {
-        session.get(id).send(msg);
+    public void send(Long toId, String msg) throws IOException {
+        session.get(toId).send(msg);
     }
 
     @Override
-    public void close() {
-        session.remove(BaseContext.getCurrentIUserDetails().getId().toString());
+    public void close(Long id) {
+        session.remove(id);
     }
 }

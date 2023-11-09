@@ -18,6 +18,9 @@ public class AwardExchangeDto {
     @ApiModelProperty("商品描述")
     private String description;
 
+    @ApiModelProperty("商品图片地址")
+    private String pic;
+
     @ApiModelProperty("花费点数")
     private Integer point;
 

@@ -8,4 +8,8 @@
         <result column="name" property="name" />
     </resultMap>
 
+    <select id="selectAll" resultType="com.neu.dreambuilder.entity.donor.ProjectType">
+        select * from donor_project_type
+    </select>
+
 </mapper>

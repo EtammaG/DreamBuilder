@@ -3,6 +3,7 @@ package com.neu.dreambuilder.entity.kid;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@AllArgsConstructor
 @TableName("kid_to_mission")
 @ApiModel(value = "ToMission对象", description = "孩子、任务和提交关系")
 public class ToMission {

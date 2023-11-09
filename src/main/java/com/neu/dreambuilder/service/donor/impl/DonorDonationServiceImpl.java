@@ -1,7 +1,6 @@
 package com.neu.dreambuilder.service.donor.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.neu.dreambuilder.common.utils.BaseContext;
 import com.neu.dreambuilder.dto.donor.DonationStaDto;
 import com.neu.dreambuilder.dto.donor.KidDonationDto;
 import com.neu.dreambuilder.dto.donor.KidThingDto;
@@ -46,47 +45,47 @@ public class DonorDonationServiceImpl implements DonorDonationService {
     }
 
     @Override
-    public void addMoney(String kidId, int amount) {
+    public void addMoney(Long donorId, Long kidId, int amount) {
         kidDonationMapper.insert(new KidDonation(
-                BaseContext.getCurrentIUserDetails().getId(),
-                Long.parseLong(kidId),
+                donorId,
+                kidId,
                 amount,
                 LocalDateTime.now()));
     }
 
     @Override
-    public void addThing(String kidId, String name) {
+    public void addThing(Long donorId, Long kidId, String name) {
         kidThingMapper.insert(new KidThing(
-                BaseContext.getCurrentIUserDetails().getId(),
-                Long.parseLong(kidId),
+                donorId,
+                kidId,
                 name,
                 LocalDateTime.now()));
     }
 
     @Override
-    public void addProject(String projectId, int amount) {
+    public void addProject(Long donorId, Long projectId, int amount) {
         projectDonationMapper.insert(new ProjectDonation(
-                BaseContext.getCurrentIUserDetails().getId(),
-                Long.parseLong(projectId),
+                donorId,
+                projectId,
                 amount,
                 LocalDateTime.now()
         ));
     }
 
     @Override
-    public DonationStaDto getStatistic() {
-        return donationStatisticMapper.selectStaByDonorId(BaseContext.getCurrentIUserDetails().getId());
+    public DonationStaDto getStatistic(Long donorId) {
+        return donationStatisticMapper.selectStaByDonorId(donorId);
     }
 
     @Override
-    public List<KidDonationDto> getMoney() {
+    public List<KidDonationDto> getMoney(Long donorId) {
         LambdaQueryWrapper<KidDonation> wrapper = new LambdaQueryWrapper<>();
         wrapper
-                .eq(KidDonation::getDonorId, BaseContext.getCurrentIUserDetails().getId());
+                .eq(KidDonation::getDonorId, donorId);
         List<KidDonation> kidDonations = kidDonationMapper.selectList(wrapper);
         Map<Long, Kid> kids = kidMapper.selectByIds(kidDonations.stream().map(KidDonation::getKidId).toList());
         List<KidDonationDto> res = new ArrayList<>(kidDonations.size());
-        for(KidDonation kidDonation : kidDonations) {
+        for (KidDonation kidDonation : kidDonations) {
             Kid kid = kids.get(kidDonation.getKidId());
             KidDonationDto kidDonationDto = new KidDonationDto();
             BeanUtils.copyProperties(kidDonation, kidDonationDto);
@@ -98,14 +97,14 @@ public class DonorDonationServiceImpl implements DonorDonationService {
     }
 
     @Override
-    public List<KidThingDto> getThing() {
+    public List<KidThingDto> getThing(Long donorId) {
         LambdaQueryWrapper<KidThing> wrapper = new LambdaQueryWrapper<>();
         wrapper
-                .eq(KidThing::getDonorId, BaseContext.getCurrentIUserDetails().getId());
+                .eq(KidThing::getDonorId, donorId);
         List<KidThing> kidThings = kidThingMapper.selectList(wrapper);
         Map<Long, Kid> kids = kidMapper.selectByIds(kidThings.stream().map(KidThing::getKidId).toList());
         List<KidThingDto> res = new ArrayList<>(kidThings.size());
-        for(KidThing kidThing : kidThings) {
+        for (KidThing kidThing : kidThings) {
             Kid kid = kids.get(kidThing.getKidId());
             KidThingDto kidThingDto = new KidThingDto();
             BeanUtils.copyProperties(kidThing, kidThingDto);
@@ -117,14 +116,14 @@ public class DonorDonationServiceImpl implements DonorDonationService {
     }
 
     @Override
-    public List<ProjectDonationDto> getProject() {
+    public List<ProjectDonationDto> getProject(Long donorId) {
         LambdaQueryWrapper<ProjectDonation> wrapper = new LambdaQueryWrapper<>();
         wrapper
-                .eq(ProjectDonation::getDonorId, BaseContext.getCurrentIUserDetails().getId());
+                .eq(ProjectDonation::getDonorId, donorId);
         List<ProjectDonation> projectDonations = projectDonationMapper.selectList(wrapper);
         Map<Long, Project> projects = projectMapper.selectByIds(projectDonations.stream().map(ProjectDonation::getProjectId).toList());
         List<ProjectDonationDto> res = new ArrayList<>(projectDonations.size());
-        for(ProjectDonation projectDonation : projectDonations) {
+        for (ProjectDonation projectDonation : projectDonations) {
             Project project = projects.get(projectDonation.getProjectId());
             ProjectDonationDto projectDonationDto = new ProjectDonationDto();
             BeanUtils.copyProperties(projectDonation, projectDonationDto);

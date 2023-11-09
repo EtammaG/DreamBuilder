@@ -12,6 +12,9 @@ import java.time.LocalDate;
 @ApiModel(value = "HotReplyDto", description = "孩子任务提交中的热门提交")
 public class HotReplyDto {
 
+    @ApiModelProperty("热门ID")
+    private String hotId;
+
     @ApiModelProperty("小孩姓名")
     private String kidName;
 
@@ -35,5 +38,8 @@ public class HotReplyDto {
 
     @ApiModelProperty("对提交的评语")
     private Integer comment;
+
+    @ApiModelProperty("是否已经被点赞")
+    private boolean liked;
 
 }

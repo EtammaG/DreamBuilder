@@ -8,17 +8,18 @@ import com.neu.dreambuilder.dto.donor.ProjectDonationDto;
 import java.util.List;
 
 public interface DonorDonationService {
-    void addMoney(String kidId, int amount);
 
-    void addThing(String kidId, String name);
+    void addMoney(Long donorId, Long kidId, int amount);
 
-    void addProject(String projectId, int amount);
+    void addThing(Long donorId, Long kidId, String name);
 
-    DonationStaDto getStatistic();
+    void addProject(Long donorId, Long projectId, int amount);
 
-    List<KidDonationDto> getMoney();
+    DonationStaDto getStatistic(Long donorId);
 
-    List<KidThingDto> getThing();
+    List<KidDonationDto> getMoney(Long donorId);
 
-    List<ProjectDonationDto> getProject();
+    List<KidThingDto> getThing(Long donorId);
+
+    List<ProjectDonationDto> getProject(Long donorId);
 }

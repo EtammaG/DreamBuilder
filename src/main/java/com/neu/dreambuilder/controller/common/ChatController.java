@@ -1,5 +1,6 @@
 package com.neu.dreambuilder.controller.common;
 
+import com.neu.dreambuilder.common.utils.BaseContext;
 import com.neu.dreambuilder.dto.Result;
 import com.neu.dreambuilder.service.common.ChatService;
 import io.swagger.annotations.Api;
@@ -25,13 +26,14 @@ public class ChatController {
 
     @GetMapping("/start")
     public Result<SseEmitter> start() {
-        return Result.success(chatService.start());
+        return Result.success(chatService.start(BaseContext.getCurrentIUserDetails().getId()));
     }
 
     @GetMapping("/receive/{id}")
     public Result<Object> receive(@PathVariable String id) {
+        Long fromId = Long.valueOf(id);
         try {
-            chatService.receive(id);
+            chatService.receive(fromId, BaseContext.getCurrentIUserDetails());
             return Result.success();
         } catch (IOException e) {
             return Result.error("接受信息失败");
@@ -39,7 +41,7 @@ public class ChatController {
     }
 
     @PostMapping("/send")
-    public Result<Object> send(String id, String msg) {
+    public Result<Object> send(Long id, String msg) {
         try {
             chatService.send(id, msg);
             return Result.success();
@@ -50,7 +52,7 @@ public class ChatController {
 
     @PostMapping("/close")
     public Result<Object> close() {
-        chatService.close();
+        chatService.close(BaseContext.getCurrentIUserDetails().getId());
         return Result.success();
     }
 

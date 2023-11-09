@@ -3,6 +3,7 @@ package com.neu.dreambuilder.entity.kid;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@AllArgsConstructor
 @TableName("kid_reply_hot_like")
 @ApiModel(value = "ReplyHotLike对象", description = "热门提交成果的点赞")
 public class ReplyHotLike {
@@ -24,7 +26,7 @@ public class ReplyHotLike {
     private Long hotId;
 
     @ApiModelProperty("点赞孩子的ID")
-    private Integer kidId;
+    private Long kidId;
 
 
 }

@@ -1,7 +1,6 @@
 package com.neu.dreambuilder.service.common.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.neu.dreambuilder.common.utils.BaseContext;
 import com.neu.dreambuilder.common.utils.JwtUtil;
 import com.neu.dreambuilder.entity.user.IUserDetails;
 import com.neu.dreambuilder.service.common.SignService;
@@ -44,7 +43,7 @@ public class SignServiceImpl implements SignService {
 
     @Override
     public String login(String username, String password, int type) {
-        System.out.println(username+password);
+        System.out.println(username + password);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
         String keyPrefix;
         Authentication authenticate;
@@ -77,8 +76,7 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
-    public void logout() {
-        IUserDetails userDetails = BaseContext.getCurrentIUserDetails();
+    public void logout(IUserDetails userDetails) {
         String keyPrefix = switch (userDetails.getType()) {
             case 1 -> DONOR_KEY_PREFIX;
             case 2 -> KID_KEY_PREFIX;

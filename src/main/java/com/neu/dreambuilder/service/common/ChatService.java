@@ -1,15 +1,17 @@
 package com.neu.dreambuilder.service.common;
 
+import com.neu.dreambuilder.entity.user.IUserDetails;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 
 public interface ChatService {
-    SseEmitter start();
 
-    void receive(String id) throws IOException;
+    SseEmitter start(Long id);
 
-    void send(String id, String msg) throws IOException;
+    void receive(Long fromId, IUserDetails to) throws IOException;
 
-    void close();
+    void send(Long toId, String msg) throws IOException;
+
+    void close(Long id);
 }
