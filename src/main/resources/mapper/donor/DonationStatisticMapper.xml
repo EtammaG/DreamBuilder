@@ -31,7 +31,7 @@
     </select>
 
     <select id="selectRank" resultType="com.neu.dreambuilder.dto.donor.DonationStaDto">
-        select d.nickname, k.c + p.c times, k.s + p.s amount
+        select d.nickname, k.c + p.c times, k.s + p.s amount, 0 `rank`
             from (<include refid="selectStaFromKidDonation"/>) as k
             join (<include refid="selectStaFromProjectDonation"/>) as p
                 on k.donor_id = p.donor_id
@@ -42,9 +42,9 @@
     </select>
 
     <select id="selectRankByDate" resultType="com.neu.dreambuilder.dto.donor.DonationStaDto">
-        select d.nickname, k.c + p.c times, k.s + p.s amount
-            from (<include refid="selectStaFromKidDonation"/>  where date between #{startDate} and #{endDate}) as k
-            join (<include refid="selectStaFromProjectDonation"/>  where date between #{startDate} and #{endDate}) as p
+        select d.nickname, k.c + p.c times, k.s + p.s amount, 0 `rank`
+            from (select donor_id, count(amount) c, sum(amount) s from donor_kid_donation where time between #{startDate} and #{endDate} group by donor_id) as k
+            join (select donor_id, count(amount) c, sum(amount) s from donor_project_donation where time between #{startDate} and #{endDate} group by donor_id) as p
                 on k.donor_id = p.donor_id
             join donor d
                 on k.donor_id = d.id
@@ -58,7 +58,7 @@
             (select kid_id from donor_kid_donation)
             union
             (select kid_id from donor_kid_thing)
-        )
+        ) x
     </select>
 
 </mapper>

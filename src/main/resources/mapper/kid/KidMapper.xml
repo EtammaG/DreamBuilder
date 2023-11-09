@@ -18,7 +18,7 @@
         <result column="rank_week_ago" property="rankWeekAgo" />
         <result column="weekrank_week_ago" property="weekrankWeekAgo" />
     </resultMap>
-    <select id="selectByIds" resultType="java.util.Map">
+    <select id="selectByIds" resultType="com.neu.dreambuilder.entity.kid.Kid">
         select *
         from kid
         where id in

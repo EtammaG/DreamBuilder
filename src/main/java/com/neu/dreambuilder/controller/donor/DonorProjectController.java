@@ -46,12 +46,12 @@ public class DonorProjectController {
 
     @PostMapping("/list")
     @ApiOperation("搜索项目简单信息")
-    public Result<PageInfo<ProjectSimDto>> list(@RequestBody PageExample<ProjectExample> pageExample) {
+    public Result<PageInfo<ProjectSimDto>> list(@RequestBody PageExample<Object> pageExample) {
         PageHelper.startPage(pageExample.getPageNum(), pageExample.getPageSize());
         return Result.success(new PageInfo<>(donorProjectService.getSim()));
     }
 
-    @GetMapping("/{id}}")
+    @GetMapping("/{id}")
     @ApiOperation("获取指定项目的详细信息")
     public Result<Project> getById(@PathVariable @ApiParam("项目ID") String id) {
         return Result.success(donorProjectService.getById(id));

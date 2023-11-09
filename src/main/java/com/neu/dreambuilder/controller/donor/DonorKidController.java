@@ -53,12 +53,12 @@ public class DonorKidController {
 
     @PostMapping("/list")
     @ApiOperation("获取孩子简单信息")
-    public Result<PageInfo<KidSimDto>> list(@RequestBody PageExample<KidExample> pageExample) {
+    public Result<PageInfo<KidSimDto>> list(@RequestBody PageExample<Object> pageExample) {
         PageHelper.startPage(pageExample.getPageNum(), pageExample.getPageSize());
         return Result.success(new PageInfo<>(kidInfoService.getSim()));
     }
 
-    @GetMapping("/{id}}")
+    @GetMapping("/{id}")
     @ApiOperation("获取指定孩子的详细信息")
     public Result<KidDto> getById(@PathVariable @ApiParam("孩子ID") String id) {
         return Result.success(kidInfoService.getById(Long.parseLong(id)));

@@ -3,6 +3,7 @@ package com.neu.dreambuilder.service.user.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.neu.dreambuilder.entity.user.KidDetails;
 import com.neu.dreambuilder.entity.user.UserKid;
+import com.neu.dreambuilder.exception.bean.CustomException;
 import com.neu.dreambuilder.mapper.user.UserKidMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +26,8 @@ public class KidDetailsServiceImpl implements UserDetailsService {
         LambdaQueryWrapper<UserKid> wrapper = new LambdaQueryWrapper<>();
         wrapper
                 .eq(UserKid::getUsername, username);
-        return new KidDetails(userKidMapper.selectOne(wrapper));
+        UserKid userKid = userKidMapper.selectOne(wrapper);
+        if(userKid == null) throw new CustomException("账号或密码错误");
+        return new KidDetails(userKid);
     }
 }
