@@ -18,5 +18,5 @@ public interface VolunteerMissionService {
 
     void putScore(Long missionId, Long kidId, int score);
 
-    Map<String,Integer> getMissionTatal();
+    Map<String,Long> getMissionTatal();
 }

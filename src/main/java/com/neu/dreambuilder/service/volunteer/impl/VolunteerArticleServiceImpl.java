@@ -1,6 +1,7 @@
 package com.neu.dreambuilder.service.volunteer.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.neu.dreambuilder.common.utils.BaseContext;
 import com.neu.dreambuilder.dto.CommentDto;
 import com.neu.dreambuilder.dto.PageExample;
 import com.neu.dreambuilder.dto.Result;
@@ -84,7 +85,9 @@ public class VolunteerArticleServiceImpl implements VolunteerArticleService {
 //            articleDto.setAmount(count);
 //            return articleDto;
 //        })).collect(Collectors.toList());
-
+        if (title==null){
+            title = "";
+        }
         List<ArticleDto> articleDtos = volunteerStatisticMapper.allArticle(title);
         return articleDtos;
     }
@@ -148,6 +151,38 @@ public class VolunteerArticleServiceImpl implements VolunteerArticleService {
 
 
         return volunteerStatisticMapper.allArticleLike(id);
+    }
+
+    @Override
+    public Boolean getIfLove(String articleId) {
+        long artId = Long.parseLong(articleId);
+        Long volunId = BaseContext.getCurrentIUserDetails().getId();
+        Long ifLove = volunteerStatisticMapper.getIfLove(volunId, artId);
+        if (ifLove == 0L) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public Integer getLoveCount(String articleId) {
+        long artId = Long.parseLong(articleId);
+        Integer loveCount = volunteerStatisticMapper.loveCount(artId).intValue();
+        return loveCount;
+    }
+
+    @Override
+    public void putArticeLove(String articleId) {
+        long artId = Long.parseLong(articleId);
+        Long volunId = BaseContext.getCurrentIUserDetails().getId();
+        volunteerStatisticMapper.inputLove(volunId,artId);
+    }
+
+    @Override
+    public void deleteArticleLove(Long articleId) {
+        Long volunId = BaseContext.getCurrentIUserDetails().getId();
+        volunteerStatisticMapper.deleteLove(volunId,articleId);
     }
 
 

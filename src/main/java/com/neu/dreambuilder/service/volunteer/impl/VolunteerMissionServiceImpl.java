@@ -8,7 +8,6 @@ import com.neu.dreambuilder.dto.mission.MissionVolViewDto;
 import com.neu.dreambuilder.entity.kid.Mission;
 import com.neu.dreambuilder.entity.kid.Reply;
 import com.neu.dreambuilder.entity.kid.ToMission;
-import com.neu.dreambuilder.entity.volunteer.VolunToMission;
 import com.neu.dreambuilder.mapper.kid.MissionMapper;
 import com.neu.dreambuilder.mapper.kid.ReplyMapper;
 import com.neu.dreambuilder.mapper.kid.ToMissionMapper;
@@ -20,10 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,6 +35,9 @@ public class VolunteerMissionServiceImpl implements VolunteerMissionService {
 
     @Resource
     private VolunteerStatisticMapper volunteerStatisticMapper;
+
+    @Value("${dream_builder.sys.mission-initial-value}")
+    private Long INITIALVALUE;
 
     @Override
     public MissionVolViewDto getRandomMission() {
@@ -78,21 +77,22 @@ public class VolunteerMissionServiceImpl implements VolunteerMissionService {
 //
 //        missionVolViewDto.setWaitingCheck(wating);
         Long volunId = BaseContext.getCurrentIUserDetails().getId();
-        Map<Long, Integer> missionSubmitCount = volunteerStatisticMapper.submitCount(volunId);
+
+        Map<Long, Map<String, Object>> missionSubmitCount = volunteerStatisticMapper.submitCount(volunId);
         Mission missionNew = volunteerStatisticMapper.volunRandomMission(volunId);
         String randomTitle = missionNew.getTitle();
-        Integer randomSubmitTotal = missionSubmitCount.get(missionNew.getId());
+        Long randomSubmitTotal = (Long) missionSubmitCount.get(missionNew.getId()).get("count");
+        Integer randomSubmitTotalInt = randomSubmitTotal.intValue();
 
+        Map<Long, Map<String, Object>> hasCheck = volunteerStatisticMapper.hasCheck();
+        Long hasCheckCount =(Long)hasCheck.get(missionNew.getId()).get("count");
+        Integer hasCheckCountInt = hasCheckCount.intValue();
 
-        Map<Long, Integer> hasCheck = volunteerStatisticMapper.hasCheck();
-        Integer hasCheckCount = hasCheck.get(missionNew.getId());
-
-        int waiting = randomSubmitTotal - hasCheckCount;
+        Integer waiting = randomSubmitTotalInt - hasCheckCountInt;
 
         missionVolViewDto.setTitle(randomTitle);
-        missionVolViewDto.setTotalSubmit(randomSubmitTotal);
+        missionVolViewDto.setTotalSubmit(randomSubmitTotalInt);
         missionVolViewDto.setWaitingCheck(waiting);
-
 
         return missionVolViewDto;
     }
@@ -101,19 +101,20 @@ public class VolunteerMissionServiceImpl implements VolunteerMissionService {
     public List<MissionVolViewDto> getAllMission() {
         Long volunId = BaseContext.getCurrentIUserDetails().getId();
         List<Mission> missions = volunteerStatisticMapper.volunAllMission(volunId);
-        Map<Long, Integer> missionSubmitCount = volunteerStatisticMapper.submitCount(volunId);
-        Map<Long, Integer> hasCheckMissionCount = volunteerStatisticMapper.hasCheck();
+        Map<Long, Map<String, Object>> missionSubmitCount = volunteerStatisticMapper.submitCount(volunId);
+        Map<Long, Map<String, Object>> hasCheckMissionCount = volunteerStatisticMapper.hasCheck();
 
         List<MissionVolViewDto> missionVolViewDtos = missions.stream().map(mission -> {
             Long missionId = mission.getId();
-            Integer total = missionSubmitCount.get(missionId);
-            Integer hasCheckCount = hasCheckMissionCount.get(missionId);
+            Long total = (Long) missionSubmitCount.get(missionId).get("count");
+            Integer totalInt = total.intValue();
+            Long hasCheckCount =(Long) hasCheckMissionCount.get(missionId).get("count");
+            Integer hasCheckCountInt = hasCheckCount.intValue();
             String title = mission.getTitle();
-
             MissionVolViewDto missionDto = new MissionVolViewDto();
             missionDto.setTitle(title);
-            missionDto.setTotalSubmit(total);
-            missionDto.setWaitingCheck(total - hasCheckCount);
+            missionDto.setTotalSubmit(totalInt);
+            missionDto.setWaitingCheck(totalInt - hasCheckCountInt);
             missionDto.setId(missionId);
             return missionDto;
 
@@ -121,6 +122,7 @@ public class VolunteerMissionServiceImpl implements VolunteerMissionService {
 
 
         return missionVolViewDtos;
+
     }
 
     @Override
@@ -128,7 +130,7 @@ public class VolunteerMissionServiceImpl implements VolunteerMissionService {
 //        LambdaQueryWrapper<ToMission> toMissionLambdaQueryWrapper = new LambdaQueryWrapper<>();
 //        toMissionLambdaQueryWrapper.eq(ToMission::getMissionId,missionId);
 //        toMissionMapper.selectList(toMissionLambdaQueryWrapper);
-
+        List<KidVieDto> kidVieDtos = volunteerStatisticMapper.volunMissionKid(missionId);
         return volunteerStatisticMapper.volunMissionKid(missionId);
     }
 
@@ -138,13 +140,17 @@ public class VolunteerMissionServiceImpl implements VolunteerMissionService {
         missionQuery.eq(Mission::getId,missionId);
         Mission mission = missionMapper.selectOne(missionQuery);
         Long volunId = BaseContext.getCurrentIUserDetails().getId();
-        Map<Long, Integer> missionSubmitCount = volunteerStatisticMapper.submitCount(volunId);
-        Map<Long, Integer> hasCheckMissionCount = volunteerStatisticMapper.hasCheck();
+        Map<Long,Map<String, Object>> missionSubmitCount = volunteerStatisticMapper.submitCount(volunId);
+        Map<Long,Map<String,Object>> hasCheckMissionCount = volunteerStatisticMapper.hasCheck();
         MissionDto missionDto = new MissionDto();
         BeanUtils.copyProperties(mission,missionDto);
-        missionDto.setTotalNum(missionSubmitCount.get(missionId));
-        missionDto.setDoneNum(hasCheckMissionCount.get(missionId));
+        Long total = (Long) missionSubmitCount.get(missionId).get("count");
+        Integer totalInt = total.intValue();
+        missionDto.setTotalNum(totalInt);
+        Long done = (Long) hasCheckMissionCount.get(missionId).get("count");
+        missionDto.setDoneNum(done.intValue());
         return missionDto;
+
     }
 
     @Override
@@ -162,24 +168,26 @@ public class VolunteerMissionServiceImpl implements VolunteerMissionService {
     }
 
     @Override
-    public Map<String, Integer> getMissionTatal() {
+    public Map<String, Long> getMissionTatal() {
         Long volunId = BaseContext.getCurrentIUserDetails().getId();
-        List<Mission> missions = volunteerStatisticMapper.volunAllMission(volunId);
-        Map<Long, Integer> missionSubmitCount = volunteerStatisticMapper.submitCount(volunId);
-        Map<Long, Integer> hasCheckMissionCount = volunteerStatisticMapper.hasCheck();
-        int total = 0;
+
+        Map<Long,Map<String,Object>> missionSubmitCount = volunteerStatisticMapper.submitCount(volunId);
+        Map<Long,Map<String,Object>> hasCheckMissionCount = volunteerStatisticMapper.hasCheck();
+
+        Long total = INITIALVALUE;
         for(Long key: missionSubmitCount.keySet()){
-           total += missionSubmitCount.get(key);
+           total += (Long) missionSubmitCount.get(key).get("count");
         }
-        int has = 0;
+        Long has = INITIALVALUE;
         for(Long key : hasCheckMissionCount.keySet()){
-            has += hasCheckMissionCount.get(key);
+            has += (Long)hasCheckMissionCount.get(key).get("count");
         }
-        Map<String,Integer> map = new HashMap<>();
+        Map<String,Long> map = new HashMap<>();
         map.put("total",total);
         map.put("has",has);
 
         return map;
+
     }
 
 

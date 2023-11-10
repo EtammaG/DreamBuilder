@@ -20,7 +20,6 @@ import lombok.Setter;
 @TableName("kid_mission")
 @ApiModel(value = "Mission对象", description = "孩子的任务")
 public class Mission {
-
     @ApiModelProperty("唯一ID")
     private Long id;
 

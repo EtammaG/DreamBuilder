@@ -15,14 +15,16 @@ import com.neu.dreambuilder.service.volunteer.VolunteerArticleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.models.auth.In;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/volunteer/article")
-//@PreAuthorize("hasAuthority('VOLUNTEER')")
+@PreAuthorize("hasAuthority('VOLUNTEER')")
 @Api(tags = "志愿者端文章相关信息接口")
 public class VolunteerArticleController {
 
@@ -78,6 +80,34 @@ public class VolunteerArticleController {
 
         return Result.success(pageInfo);
     }
+
+    @GetMapping("/love")
+    @ApiOperation("详细文章内容点赞")
+    public Result<Boolean> ifLove(String articleId){
+
+        return Result.success(volunteerArticleService.getIfLove(articleId));
+    }
+
+    @GetMapping("/lovecount")
+    @ApiOperation("详细文章内容的点赞数")
+    public Result<Integer> articleLoveCount(String articleId){
+        return Result.success( volunteerArticleService.getLoveCount(articleId));
+
+    }
+
+
+    @PostMapping("/loveput/{articleId}")
+    @ApiOperation("给文章点赞")
+    public void putArticleLove(@PathVariable String articleId){
+        volunteerArticleService.putArticeLove(articleId);
+    }
+
+    @DeleteMapping("/love/delete/{articleId}")
+    @ApiOperation("取消点赞")
+    public void deleteArticlelove(@PathVariable Long articleId){
+        volunteerArticleService.deleteArticleLove(articleId);
+    }
+
 
 
 }

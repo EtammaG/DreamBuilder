@@ -19,8 +19,8 @@ public interface VolunteerStatisticMapper {
      * @param volunId
      * @return
      */
-    @MapKey("missionId")
-    Map<Long,Integer> submitCount(Long volunId);
+    @MapKey("mission_id")
+    Map<Long,Map<String,Object>> submitCount(Long volunId);
 
     /**
      * 查询该志愿者最新的任务信息
@@ -34,8 +34,8 @@ public interface VolunteerStatisticMapper {
      * @param
      * @return
      */
-    @MapKey("missionId")
-    Map<Long,Integer> hasCheck();
+    @MapKey("mission_id")
+    Map<Long,Map<String,Object>> hasCheck();
 
     /**
      * 查询该志愿者对应的所有任务
@@ -81,7 +81,7 @@ public interface VolunteerStatisticMapper {
      * @return
      */
     @MapKey("kid_id")
-    Map<String,Object> newDonation(List<Long> kidId);
+    List<Map<String,Object>> newDonation(List<Long> kidId);
 
 
     /**
@@ -90,7 +90,36 @@ public interface VolunteerStatisticMapper {
      * @return
      */
     @MapKey("kid_id")
-    Map<String,Object> newThingDonation(List<Long> kidId);
+    List<Map<String,Object>> newThingDonation(List<Long> kidId);
+
+    /**
+     * 查询该志愿者是否给该文章点赞
+     * @param volunId
+     * @param articleId
+     * @return
+     */
+    Long getIfLove(Long volunId,Long articleId);
+
+    /**
+     * 查询该文章所有点赞
+     * @param articleId
+     * @return
+     */
+    Long loveCount(Long articleId);
+
+    /**
+     * 添加文章点赞
+     * @param volunId
+     * @param articleId
+     */
+    void inputLove(Long volunId,Long articleId);
+
+    /**
+     * 取消文章点赞
+     * @param volunId
+     * @param articleId
+     */
+    void deleteLove(Long volunId,Long articleId);
 
 
 

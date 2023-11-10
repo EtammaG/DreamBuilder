@@ -52,6 +52,7 @@ pagehelper:
   page-size-zero: false
   params: count=countSql
 
+
 mybatis-plus:
   global-config:
     db-config:
@@ -65,8 +66,11 @@ dream-builder:
       login-kid: 'login:kid:'
       login-volunteer: 'login:volunteer:'
       limit-times: 1m
-      limit-ip: 1
+      limit-ip: 10000
+      limit-id: 10000
   sys:
     sign-in-duration: P1D
     file-save-path: D:/Empty/
-    limit-times-in-a-minute: 5
+    limit-times-in-a-minute: 10000
+    id-limit-times-in-a-minute: 10000
+    mission-initial-value: 0

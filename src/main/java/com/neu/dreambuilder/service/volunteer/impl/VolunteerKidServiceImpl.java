@@ -11,11 +11,14 @@ import com.neu.dreambuilder.mapper.volunteer.VolunToKidMapper;
 import com.neu.dreambuilder.mapper.volunteer.VolunteerStatisticMapper;
 import com.neu.dreambuilder.service.volunteer.VolunteerKidService;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,26 +58,31 @@ public class VolunteerKidServiceImpl implements VolunteerKidService {
         List<Long> kidIds = kids.stream().map(kid -> {
             return kid.getId();
         }).collect(Collectors.toList());
-        Map<String, Object> newDonation = volunteerStatisticMapper.newDonation(kidIds);
-        Map<String, Object> newThingDonation = volunteerStatisticMapper.newThingDonation(kidIds);
-        LocalDateTime timeThing = (LocalDateTime)newThingDonation.get("time");
-        LocalDateTime timeMoney = (LocalDateTime)newDonation.get("time");
-        if (timeMoney.isAfter(timeThing)){
-            Long kidId = (Long)newDonation.get("kid_id");
+        List<Map<String, Object>> newDonation = volunteerStatisticMapper.newDonation(kidIds);
+        Long kidIdMoney = (Long) newDonation.get(0).get("kid_id");
+        Timestamp timeMoney = (Timestamp)newDonation.get(0).get("time");
+
+
+        List<Map<String, Object>> newThingDonation = volunteerStatisticMapper.newThingDonation(kidIds);
+        Long kidIdThing = (Long) newThingDonation.get(0).get("kid_id");
+        Timestamp timeThing = (Timestamp)newThingDonation.get(0).get("time");
+
+
+
+        if (timeMoney.after(timeThing)){
              LambdaQueryWrapper<Kid> kidQuery = new LambdaQueryWrapper<>();
-             kidQuery.eq(Kid::getId,kidId);
+             kidQuery.eq(Kid::getId,kidIdMoney);
             Kid kid = kidMapper.selectOne(kidQuery);
             kidRecDto.setName(kid.getName());
             kidRecDto.setPhoto(kid.getPhoto());
             kidRecDto.setRecent(kid.getName()+"在通过了自己的努力后，于"+timeMoney
                     +"获得了"
-                    +newDonation.get("nickname")
+                    +newDonation.get(0).get("nickname")
                     +"的现金资助："
-                    +newDonation.get("amount")+"元");
+                    +newDonation.get(0).get("amount")+"元");
         }else {
-            Long kidId = (Long)newThingDonation.get("kid_id");
             LambdaQueryWrapper<Kid> kidQuery = new LambdaQueryWrapper<>();
-            kidQuery.eq(Kid::getId,kidId);
+            kidQuery.eq(Kid::getId,kidIdThing);
             Kid kid = kidMapper.selectOne(kidQuery);
             kidRecDto.setName(kid.getName());
             kidRecDto.setPhoto(kid.getPhoto());
@@ -82,9 +90,9 @@ public class VolunteerKidServiceImpl implements VolunteerKidService {
                     +"在通过了自己的努力后，于"
                     +timeThing
                     +"获得了"
-                    +newThingDonation.get("nickname")
+                    +newThingDonation.get(0).get("nickname")
                     +"的物品资助:"
-                    +newThingDonation.get("thing_name"));
+                    +newThingDonation.get(0).get("thing_name"));
         }
 
 

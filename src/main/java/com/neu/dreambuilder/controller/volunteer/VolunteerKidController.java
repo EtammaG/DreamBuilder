@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/volunteer/kid")
-//@PreAuthorize("hasAuthority('VOLUNTEER')")
+@PreAuthorize("hasAuthority('VOLUNTEER')")
 @Api(tags = "志愿者端孩子信息接口")
 public class VolunteerKidController {
 

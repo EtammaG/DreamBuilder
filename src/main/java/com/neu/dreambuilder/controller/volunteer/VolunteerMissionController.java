@@ -22,7 +22,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/volunteer/mission")
-//@PreAuthorize("hasAuthority('VOLUNTEER')")
+@PreAuthorize("hasAuthority('VOLUNTEER')")
 @Api(tags = "志愿者任务相关信息接口")
 public class VolunteerMissionController {
 
@@ -40,7 +40,7 @@ public class VolunteerMissionController {
 
     @GetMapping("/totalMissionCount")
     @ApiOperation(value = "志愿者总任务，和未完成的总任务数")
-    public Result<Map<String,Integer>> getMissionTatal(){
+    public Result<Map<String,Long>> getMissionTatal(){
         return Result.success( volunteerMissionService.getMissionTatal());
     }
 
@@ -60,7 +60,7 @@ public class VolunteerMissionController {
     @ApiOperation("单独任务孩子的完成情况")
     public Result<PageInfo<KidVieDto>> getMissionAllDetail(@RequestBody PageExample<Mission> missionPageExample){
         PageHelper.startPage(missionPageExample.getPageNum(),missionPageExample.getPageSize());
-        Long missionid = missionPageExample.getExample().getId();
+        Long missionid = Long.valueOf(missionPageExample.getExample().getId());
         List<KidVieDto> kidVieDtos = volunteerMissionService.getKidInfo(missionid);
         PageInfo<KidVieDto> pageInfo = new PageInfo<>(kidVieDtos);
         return Result.success(pageInfo);
@@ -76,18 +76,11 @@ public class VolunteerMissionController {
     }
 
 
-//    @PostMapping("/inputscore")
-//    @ApiOperation("给孩子完成的任务打分")
-//    public void saveScore(@ApiParam("前端传过来的missionId") Long missionId,
-//                          @ApiParam("前端传过来的kidId")Long kidId,
-//                          @ApiParam("前端传过来的score")int score){
-//        volunteerMissionService.putScore(missionId,kidId,score);
-//    }
 
     @PostMapping("/inputscore")
     @ApiOperation("给孩子完成的任务打分")
     public void saveScore(@RequestBody Map<String,Object> map){
-        volunteerMissionService.putScore((Long) map.get("missionId"),(Long) map.get("kidId"),(Integer)map.get("score"));
+        volunteerMissionService.putScore(Long.valueOf((String)map.get("missionId")),Long.valueOf((String) map.get("kidId")),(Integer)map.get("score"));
     }
 
 

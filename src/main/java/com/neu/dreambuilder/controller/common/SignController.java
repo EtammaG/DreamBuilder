@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -25,10 +27,23 @@ public class SignController {
         this.signService = signService;
     }
 
-    @GetMapping("/login")
+//    @PostMapping("/login")
+//    @PreAuthorize("isAnonymous()")
+//    @LimitRequest(timesInAUnit = 20, unit = TimeUnit.MINUTES)
+//    public Result<String> login(String username, String password, @ApiParam("1表示donor，2表示kid，3表示volunteer") int type) {
+//        String jwt = signService.login(username, password, type);
+//        return jwt == null
+//                ? Result.error("账号或密码错误")
+//                : Result.success(jwt);
+//    }
+    @PostMapping("/login")
     @PreAuthorize("isAnonymous()")
     @LimitRequest(timesInAUnit = 20, unit = TimeUnit.MINUTES)
-    public Result<String> login(String username, String password, @ApiParam("1表示donor，2表示kid，3表示volunteer") int type) {
+    public Result<String> login(@RequestBody Map<String,Object> map) {
+        String username = (String)map.get("username");
+        String password = (String) map.get("password");
+        Integer type = (Integer)map.get("type");
+
         String jwt = signService.login(username, password, type);
         return jwt == null
                 ? Result.error("账号或密码错误")
