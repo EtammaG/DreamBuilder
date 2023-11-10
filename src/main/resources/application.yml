@@ -52,7 +52,7 @@ dream-builder:
   redis:
     prefix:
       limit-id: 'limit:id:'
-      limit-ip: 'limit:ip'
+      limit-ip: 'limit:ip:'
       login-donor: 'login:donor:'
       login-kid: 'login:kid:'
       login-volunteer: 'login:volunteer:'

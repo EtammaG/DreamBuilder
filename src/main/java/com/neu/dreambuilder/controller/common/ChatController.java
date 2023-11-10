@@ -6,14 +6,14 @@ import com.neu.dreambuilder.service.common.ChatService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.io.IOException;
 import java.util.Map;
 
 @RestController
-@RequestMapping("chat")
+@RequestMapping("/chat")
 @Slf4j
 @Api(tags = "聊天室相关接口")
 public class ChatController {
@@ -25,38 +25,20 @@ public class ChatController {
         this.chatService = chatService;
     }
 
-    @GetMapping("/start")
-    public Result<SseEmitter> start() {
-        return Result.success(chatService.start(BaseContext.getCurrentIUserDetails().getId()));
-    }
-
     @GetMapping("/receive/{id}")
-    public Result<Object> receive(@PathVariable String id) {
-        Long fromId = Long.valueOf(id);
-        try {
-            chatService.receive(fromId, BaseContext.getCurrentIUserDetails());
-            return Result.success();
-        } catch (IOException e) {
-            return Result.error("接受信息失败");
-        }
+    @PreAuthorize("hasAuthority('LOGIN')")
+    public SseEmitter receive(@PathVariable String id) {
+        return chatService.receive(Long.valueOf(id), BaseContext.getCurrentIUserDetails());
+
     }
 
     @PostMapping("/send")
+    @PreAuthorize("hasAuthority('LOGIN')")
     public Result<Object> send(@RequestBody Map<String, String> map) {
-    //public Result<Object> send(Long id, String msg) {
+        //public Result<Object> send(Long id, String msg) {
         String id = map.get("id");
         String msg = map.get("msg");
-        try {
-            chatService.send(Long.valueOf(id), msg);
-            return Result.success();
-        } catch (IOException e) {
-            return Result.error("发送信息失败");
-        }
-    }
-
-    @PostMapping("/close")
-    public Result<Object> close() {
-        chatService.close(BaseContext.getCurrentIUserDetails().getId());
+        chatService.send(BaseContext.getCurrentIUserDetails(), Long.valueOf(id), msg);
         return Result.success();
     }
 

@@ -28,7 +28,7 @@ public class SignController {
 
     @PostMapping("/signin")
     @PreAuthorize("isAnonymous()")
-    @LimitRequest(timesInAUnit = 20, unit = TimeUnit.MINUTES)
+    @LimitRequest(timesInAUnit = 60, unit = TimeUnit.MINUTES)
     //public Result<String> login(String username, String password, @ApiParam("1表示donor，2表示kid，3表示volunteer") int type) {
     public Result<String> login(@RequestBody Map<String, String> map) {
         String username = map.get("username");

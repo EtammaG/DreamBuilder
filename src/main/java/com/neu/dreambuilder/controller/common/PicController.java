@@ -4,15 +4,16 @@ import com.neu.dreambuilder.dto.Result;
 import com.neu.dreambuilder.service.common.FileService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/pic")
 @Api(tags = "获取图片相关接口")
-public class PicController extends FileController{
+public class PicController extends FileController {
 
     @Autowired
     public PicController(FileService fileService) {
@@ -41,7 +42,7 @@ public class PicController extends FileController{
     @GetMapping("/{filename}")
     @PreAuthorize("hasAuthority('LOGIN')")
     @Override
-    public ResponseEntity<byte[]> download(@PathVariable String filename) {
-        return super.download(filename);
+    public void download(@PathVariable String filename, HttpServletResponse response) {
+        super.download(filename, response);
     }
 }

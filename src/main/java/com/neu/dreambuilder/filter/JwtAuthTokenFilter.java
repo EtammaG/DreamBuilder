@@ -5,6 +5,7 @@ import com.neu.dreambuilder.common.utils.BaseContext;
 import com.neu.dreambuilder.common.utils.JwtUtil;
 import com.neu.dreambuilder.entity.user.IUserDetails;
 import com.neu.dreambuilder.exception.bean.CustomException;
+import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -45,7 +46,12 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        String redisKey = JwtUtil.parseJWT(token).getBody().getSubject();
+        String redisKey;
+        try {
+             redisKey = JwtUtil.parseJWT(token).getBody().getSubject();
+        }catch (JwtException e) {
+            throw new CustomException("illegal token");
+        }
         IUserDetails userDetails = JSON.parseObject(stringRedisTemplate.opsForValue().get(redisKey), IUserDetails.class);
         if (userDetails == null) {
             log.warn("illegal token");
