@@ -68,8 +68,13 @@
     <select id="hasCheck" resultType="java.util.Map">
 
         select km.mission_id, count(kr.id) as count
-        from kid_to_mission as km
-            left join kid_reply as kr on km.reply_id = kr.id and kr.score is not null
+        from kid_to_mission as km,kid_reply as kr
+        where km.reply_id = kr.id
+        and km.mission_id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        and kr.score is not null
         group by km.mission_id
 
     </select>
@@ -148,6 +153,19 @@
     <select id="inputLove">
         INSERT INTO volun_article_love
         VALUES (#{volunId},#{articleId},1);
+    </select>
+    <select id="hasCheckAll" resultType="java.util.Map">
+
+<!--        select km.mission_id, count(kr.id) as count-->
+<!--        from kid_to_mission as km,kid_reply as kr-->
+<!--        where km.reply_id = kr.id-->
+<!--        and kr.score is not null-->
+<!--        group by km.mission_id-->
+        SELECT km.mission_id, COALESCE(count(kr.id), 0) as count
+        FROM kid_to_mission as km
+        LEFT JOIN kid_reply as kr ON km.reply_id = kr.id and kr.score is not null
+        group by km.mission_id;
+
     </select>
 
 

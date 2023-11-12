@@ -35,7 +35,10 @@ public interface VolunteerStatisticMapper {
      * @return
      */
     @MapKey("mission_id")
-    Map<Long,Map<String,Object>> hasCheck();
+    Map<Long,Map<String,Object>> hasCheck(List<Long> ids);
+
+    @MapKey("mission_id")
+    Map<Long,Map<String,Object>> hasCheckAll();
 
     /**
      * 查询该志愿者对应的所有任务
