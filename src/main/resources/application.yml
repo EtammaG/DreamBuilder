@@ -10,20 +10,29 @@ spring:
     name: dream_builder
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.200.100:3306/dream_builder?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+#    url: jdbc:mysql://localhost:3306/dream_builder?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/dream_builder?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+
     username: root
-    password: Root_123
+    password: "031125"
     type: com.alibaba.druid.pool.DruidDataSource
+  web:
+    resources:
+      static-locations: classpath:/templates
+  mvc:
+    static-path-pattern: /**
   redis:
-    host: 192.168.200.100
+    host: localhost
     port: 6379
-    password: 123456
+#    password: 123456
     jedis:
       pool:
         max-active: 8
         max-wait: -1ms
         max-idle: 8
         min-idle: 0
+    prefix:
+      limit-time: 1m
   servlet:
     multipart:
       max-file-size: 50MB
@@ -32,7 +41,7 @@ logging:
   pattern:
     console: "[%-20t] %clr(${PID}){magenta} %clr(${LOG_LEVEL_PATTERN:%5p}) %clr(%40.40logger{39}){cyan} %clr(:){faint} %m${LOG_EXCEPTION_CONVERSION_WORD:%wEx}%n"
   level:
-    com.neu.dreambuilder.mapper: trace
+    com.eiji.ieat.mapper: trace
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
@@ -44,8 +53,9 @@ pagehelper:
   auto-dialect: true
   reasonable: true
   support-methods-arguments: true
-  page-size-zero: true
+  page-size-zero: false
   params: count=countSql
+
 
 mybatis-plus:
   global-config:
@@ -70,7 +80,12 @@ dream-builder:
       login-donor: 'login:donor:'
       login-kid: 'login:kid:'
       login-volunteer: 'login:volunteer:'
+      limit-times: 1m
+      limit-ip: 10000
+      limit-id: 10000
   sys:
     sign-in-duration: P1D
     file-save-path: D:/Empty/
-    id-limit-times-in-a-minute: 100
+    limit-times-in-a-minute: 10000
+    id-limit-times-in-a-minute: 10000
+    mission-initial-value: 0

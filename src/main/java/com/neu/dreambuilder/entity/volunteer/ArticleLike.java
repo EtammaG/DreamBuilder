@@ -3,6 +3,7 @@ package com.neu.dreambuilder.entity.volunteer;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +18,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @TableName("volun_article_like")
+@AllArgsConstructor
 @ApiModel(value = "ArticleLike对象", description = "志愿者收藏的文章")
 public class ArticleLike {
 

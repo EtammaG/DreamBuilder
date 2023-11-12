@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public class VolunteerDetails extends IUserDetails {
 
+
+
     public VolunteerDetails(UserVolunteer userVolunteer) {
         setId(userVolunteer.getVolunteerId());
         setType(3);

@@ -19,4 +19,14 @@ public interface VolunteerArticleService {
     Result<List<CommentDto>> getArticleComments(long id);
 
     List<ArticleDto> getArticleColleted(Long id);
+
+    Boolean getIfLove(String articleId);
+
+    Integer getLoveCount(String articleId);
+
+    void putArticeLove(String articleId);
+
+    void deleteArticleLove(Long articleId);
+
+    void putArticleLike(Long articleId);
 }

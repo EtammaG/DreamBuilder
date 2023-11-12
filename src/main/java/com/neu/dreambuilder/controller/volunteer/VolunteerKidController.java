@@ -27,18 +27,17 @@ public class VolunteerKidController {
      *志愿者主页面随机孩子的近况
      * @return
      */
-    @GetMapping("/random/recent")
+    @GetMapping(value = "/random/recent", produces = "application/json; charset=utf-8")
     @ApiOperation(value = "主页面孩子近况")
     public Result<KidRecDto> getRandom(){
-        volunteerKidService.getKidRandomRec();
-        return null;
+        return Result.success(volunteerKidService.getKidRandomRec());
     }
 
     /**
      * 所有孩子列表
      * @return
      */
-    @GetMapping("/all")
+    @GetMapping(value = "/all",produces = "application/json; charset=utf-8")
     @ApiOperation(value = "孩子信息列表")
     public Result<List<Kid>> getAll(){
 
