@@ -10,4 +10,6 @@ public interface DonorDonationRankService {
     List<DonationStaDto> month();
 
     List<DonationStaDto> week();
+
+    void update(Long donorId);
 }

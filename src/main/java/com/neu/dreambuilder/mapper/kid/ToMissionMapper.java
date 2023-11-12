@@ -15,4 +15,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface ToMissionMapper extends BaseMapper<ToMission> {
 
+    void updateReply(ToMission toMission);
+
 }

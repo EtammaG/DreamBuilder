@@ -10,7 +10,13 @@ import java.util.List;
 @Mapper
 public interface DonationStatisticMapper {
 
-    DonationStaDto selectStaByDonorId(@Param("donorId") Long donorId);
+    DonationStaDto selectSta(@Param("donorId") Long donorId);
+
+    DonationStaDto selectSta2(@Param("donorId") Long donorId);
+
+    DonationStaDto selectSta2ByDate(@Param("donorId") Long donorId,
+                                    @Param("startDate") LocalDate startDate,
+                                    @Param("endDate") LocalDate endDate);
 
     List<DonationStaDto> selectRank(@Param("num") int num);
 

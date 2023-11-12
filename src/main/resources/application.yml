@@ -1,9 +1,10 @@
 server:
   port: 8080
-  address: 0.0.0.0
   servlet:
     encoding:
-      charset: utf-8
+      charset: UTF-8
+      force: true
+      enabled: true
 spring:
   application:
     name: dream_builder
@@ -65,6 +66,17 @@ mybatis-plus:
 dream-builder:
   redis:
     prefix:
+      donor:
+        donation:
+          rank: 'donor:donation:rank:'
+        project: 'donor:project:'
+      kid:
+        i : 'kid:'
+        award: 'kid:award:'
+      hot:
+        reply: 'hot:reply:'
+      limit-id: 'limit:id:'
+      limit-ip: 'limit:ip:'
       login-donor: 'login:donor:'
       login-kid: 'login:kid:'
       login-volunteer: 'login:volunteer:'

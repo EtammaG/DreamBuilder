@@ -4,6 +4,7 @@ import com.neu.dreambuilder.exception.bean.CustomException;
 import com.neu.dreambuilder.dto.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,6 +40,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InternalAuthenticationServiceException.class)
     public Result<String> handleInternalAuthenticationServiceException(InternalAuthenticationServiceException e) {
+        return Result.error("账号或密码错误");
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public Result<String> handleInternalAuthenticationServiceException(BadCredentialsException e) {
         return Result.error("账号或密码错误");
     }
 
