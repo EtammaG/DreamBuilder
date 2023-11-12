@@ -31,45 +31,48 @@ public class VolunteerArticleController {
     @Resource
     private VolunteerArticleService volunteerArticleService;
 
-
-
     /**
      *获取志愿者界面滚动文章
      * @return
      */
-    @GetMapping("/random")
+    @GetMapping(value = "/random",produces = "application/json; charset=utf-8")
     @ApiOperation(value = "志愿者页面滑动的文章")
     public Result<ArticleDto> getRandomArticle(){
         return volunteerArticleService.getRandomArticle();
     }
 
-    @PostMapping("/list")
+    @PostMapping(value = "/list",produces = "application/json; charset=utf-8")
     @ApiOperation("文章列表（分页）")
     public Result<PageInfo<ArticleDto>> getAllArticle(@RequestBody PageExample<Article> articlePage){
         PageHelper.startPage(articlePage.getPageNum(),articlePage.getPageSize());
+        List<ArticleDto> articleDtos;
+       if (articlePage.getExample()==null){
+           articleDtos =  volunteerArticleService.getAllArticle("");
+       }else {
 
-        List<ArticleDto> articleDtos = volunteerArticleService.getAllArticle(articlePage.getExample().getTitle());
+            articleDtos = volunteerArticleService.getAllArticle(articlePage.getExample().getTitle());
+       }
         PageInfo<ArticleDto> pageInfo =new PageInfo<>(articleDtos);
         return Result.success(pageInfo);
     }
 
 
 
-    @GetMapping("/detail/{id}")
+    @GetMapping(value = "/detail/{id}", produces = "application/json; charset=utf-8")
     @ApiOperation("一篇文章的详细信息")
     public Result<Article> getArticleDetail(@ApiParam(name = "id",value = "文章的id") @PathVariable String id){
         long idt = Long.parseLong(id);
         return volunteerArticleService.getArticleDetails(idt);
     }
 
-    @GetMapping("/detail/{id}/comment")
+    @GetMapping(value = "/detail/{id}/comment",produces = "application/json; charset=utf-8")
     @ApiOperation("一篇文章的评论")
     public Result<List<CommentDto>> getArticleDetailComment(@ApiParam(name = "id",value = "文章的id")  @PathVariable String id){
         long idt = Long.parseLong(id);
         return volunteerArticleService.getArticleComments(idt);
     }
 
-    @PostMapping("/comment")
+    @PostMapping(value = "/comment",produces = "application/json; charset=utf-8")
     @ApiOperation("被收藏的文章")
     public Result<PageInfo<ArticleDto>> getCollectedArticle(@RequestBody PageExample<Object> articlePage){
         PageHelper.startPage(articlePage.getPageNum(),articlePage.getPageSize());
@@ -81,14 +84,14 @@ public class VolunteerArticleController {
         return Result.success(pageInfo);
     }
 
-    @GetMapping("/love")
+    @GetMapping(value = "/love",produces = "application/json; charset=utf-8")
     @ApiOperation("详细文章内容点赞")
     public Result<Boolean> ifLove(String articleId){
 
         return Result.success(volunteerArticleService.getIfLove(articleId));
     }
 
-    @GetMapping("/lovecount")
+    @GetMapping(value = "/lovecount",produces = "application/json; charset=utf-8")
     @ApiOperation("详细文章内容的点赞数")
     public Result<Integer> articleLoveCount(String articleId){
         return Result.success( volunteerArticleService.getLoveCount(articleId));
@@ -96,16 +99,26 @@ public class VolunteerArticleController {
     }
 
 
-    @PostMapping("/loveput/{articleId}")
+    @PostMapping(value = "/loveput/{articleId}",produces = "application/json; charset=utf-8")
     @ApiOperation("给文章点赞")
-    public void putArticleLove(@PathVariable String articleId){
+    public Result<String> putArticleLove(@PathVariable String articleId){
         volunteerArticleService.putArticeLove(articleId);
+        return Result.success("点赞成功");
     }
 
-    @DeleteMapping("/love/delete/{articleId}")
+    @DeleteMapping(value = "/love/delete/{articleId}",produces = "application/json; charset=utf-8")
     @ApiOperation("取消点赞")
-    public void deleteArticlelove(@PathVariable Long articleId){
+    public Result<String> deleteArticlelove(@PathVariable Long articleId){
         volunteerArticleService.deleteArticleLove(articleId);
+        return Result.success("取消成功");
+    }
+
+    @PostMapping(value = "/putlike/{articleId}",produces = "application/json; charset=utf-8")
+    @ApiOperation("添加文章收藏")
+    public Result<String> putArticleLike(@PathVariable String articleId){
+        Long artId = Long.valueOf(articleId);
+        volunteerArticleService.putArticleLike(artId);
+        return Result.success("收藏成功");
     }
 
 

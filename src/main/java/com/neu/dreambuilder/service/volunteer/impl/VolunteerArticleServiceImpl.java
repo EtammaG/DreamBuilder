@@ -185,5 +185,13 @@ public class VolunteerArticleServiceImpl implements VolunteerArticleService {
         volunteerStatisticMapper.deleteLove(volunId,articleId);
     }
 
+    @Override
+    public void putArticleLike(Long articleId) {
+        Long volunId = BaseContext.getCurrentIUserDetails().getId();
+
+        articleLikeMapper.insert(new ArticleLike(volunId,articleId));
+
+    }
+
 
 }

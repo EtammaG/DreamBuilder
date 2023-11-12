@@ -36,8 +36,9 @@ public class VolunteerMissionServiceImpl implements VolunteerMissionService {
     @Resource
     private VolunteerStatisticMapper volunteerStatisticMapper;
 
-    @Value("${dream_builder.sys.mission-initial-value}")
-    private Long INITIALVALUE;
+    @Value("${dream-builder.sys.mission-initial-value}")
+    //@Value("${dream-builder.sys.mission-initial-value}")
+    private Long INITIAL_VALUE;
 
     @Override
     public MissionVolViewDto getRandomMission() {
@@ -174,11 +175,11 @@ public class VolunteerMissionServiceImpl implements VolunteerMissionService {
         Map<Long,Map<String,Object>> missionSubmitCount = volunteerStatisticMapper.submitCount(volunId);
         Map<Long,Map<String,Object>> hasCheckMissionCount = volunteerStatisticMapper.hasCheck();
 
-        Long total = INITIALVALUE;
+        Long total = INITIAL_VALUE;
         for(Long key: missionSubmitCount.keySet()){
            total += (Long) missionSubmitCount.get(key).get("count");
         }
-        Long has = INITIALVALUE;
+        Long has = INITIAL_VALUE;
         for(Long key : hasCheckMissionCount.keySet()){
             has += (Long)hasCheckMissionCount.get(key).get("count");
         }

@@ -31,21 +31,21 @@ public class VolunteerMissionController {
 
 
 
-    @GetMapping("/random")
+    @GetMapping(value = "/random",produces = "application/json; charset=utf-8")
     @ApiOperation(value = "志愿者主页面滑动的我的任务")
     public Result<MissionVolViewDto> getMission(){
 
         return Result.success(volunteerMissionService.getRandomMission());
     }
 
-    @GetMapping("/totalMissionCount")
+    @GetMapping(value = "/totalMissionCount",produces = "application/json; charset=utf-8")
     @ApiOperation(value = "志愿者总任务，和未完成的总任务数")
     public Result<Map<String,Long>> getMissionTatal(){
         return Result.success( volunteerMissionService.getMissionTatal());
     }
 
 
-    @PostMapping("/list")
+    @PostMapping(value = "/list",produces = "application/json; charset=utf-8")
     @ApiOperation(value = "志愿者端任务列表")
     public Result<PageInfo<MissionVolViewDto>> getAllMission(@RequestBody PageExample<Mission> missionPageExample){
 
@@ -56,7 +56,7 @@ public class VolunteerMissionController {
     }
 
 
-    @PostMapping("/allkid/detail")
+    @PostMapping(value = "/allkid/detail",produces = "application/json; charset=utf-8")
     @ApiOperation("单独任务孩子的完成情况")
     public Result<PageInfo<KidVieDto>> getMissionAllDetail(@RequestBody PageExample<Mission> missionPageExample){
         PageHelper.startPage(missionPageExample.getPageNum(),missionPageExample.getPageSize());
@@ -67,7 +67,7 @@ public class VolunteerMissionController {
     }
 
 
-    @GetMapping("/detail")
+    @GetMapping(value = "/detail",produces = "application/json; charset=utf-8")
     @ApiOperation("该任务的详细信息")
     public Result<MissionDto> getMissionDetail(@ApiParam(name = "id",value = "任务id") @RequestParam String id){
 
@@ -77,7 +77,7 @@ public class VolunteerMissionController {
 
 
 
-    @PostMapping("/inputscore")
+    @PostMapping(value = "/inputscore",produces = "application/json; charset=utf-8")
     @ApiOperation("给孩子完成的任务打分")
     public void saveScore(@RequestBody Map<String,Object> map){
         volunteerMissionService.putScore(Long.valueOf((String)map.get("missionId")),Long.valueOf((String) map.get("kidId")),(Integer)map.get("score"));

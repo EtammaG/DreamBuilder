@@ -27,4 +27,6 @@ public interface VolunteerArticleService {
     void putArticeLove(String articleId);
 
     void deleteArticleLove(Long articleId);
+
+    void putArticleLike(Long articleId);
 }

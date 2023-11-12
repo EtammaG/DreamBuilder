@@ -22,7 +22,7 @@ public class VolunteerInfoController {
     @Resource
     private VolunteerInfoService volunteerInfoService;
 
-    @GetMapping("/info")
+    @GetMapping(value = "/info",produces = "application/json; charset=utf-8")
     @ApiOperation(value = "志愿者信息")
     public Result<Volunteer> getVolunInfo(){
         return Result.success(volunteerInfoService.getVolunteerInfo());

@@ -109,13 +109,13 @@
     </select>
     <select id="allArticleLike" resultType="com.neu.dreambuilder.dto.volunteer.ArticleDto">
 
-        select a.id,a.author_name,a.content_pic,a.author_pic,a.title,a.content,a.article_time,count(*) as amount
-        from volun_article_comment as vac, volun_article_like as val , volun_article as a
-        where val.volun_id = #{volunId}
-          and vac.article_id = val.article_id
-          and vac.article_id = a.id
-        group by a.id
-        order by a.article_time desc
+        SELECT a.id, a.author_name, a.content_pic, a.author_pic, a.title, a.content, a.article_time, IFNULL(COUNT(vac.article_id), 0) AS amount
+        FROM volun_article AS a
+                 LEFT JOIN volun_article_like AS val ON a.id = val.article_id
+                 LEFT JOIN volun_article_comment AS vac ON vac.article_id = a.id
+        WHERE val.volun_id = #{volunId}
+        GROUP BY a.id
+        ORDER BY a.article_time DESC
 
 
     </select>
