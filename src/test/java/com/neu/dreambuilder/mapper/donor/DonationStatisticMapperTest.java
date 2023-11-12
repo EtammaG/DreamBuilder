@@ -13,8 +13,8 @@ class DonationStatisticMapperTest {
 
     @Test
     void selectStatistic() {
-        DonationStaDto donationStaDto = donationStatisticMapper.selectStaByDonorId(1L);
-        DonationStaDto donationStaDto1 = donationStatisticMapper.selectStaByDonorId(2L);
+        DonationStaDto donationStaDto = donationStatisticMapper.selectSta(1L);
+        DonationStaDto donationStaDto1 = donationStatisticMapper.selectSta(2L);
         System.out.println();
     }
 }

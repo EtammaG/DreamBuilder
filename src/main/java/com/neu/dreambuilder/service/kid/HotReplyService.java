@@ -10,7 +10,10 @@ public interface HotReplyService {
 
     void like(Long id, long hotId);
 
+    void unlike(Long id, long hotId);
+
     List<CommentDto> getComment(String hotId);
 
     void addComment(Long id, long hotId, String comment);
+
 }

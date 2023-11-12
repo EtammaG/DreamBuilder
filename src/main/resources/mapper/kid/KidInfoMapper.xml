@@ -6,7 +6,7 @@
 <mapper namespace="com.neu.dreambuilder.mapper.kid.KidInfoMapper">
 
     <select id="selectSimByTypeId" resultType="com.neu.dreambuilder.dto.kid.KidSimDto">
-        select id, name, age, photo, description
+        select id, name, age, photo, description, address
         from kid k
         join kid_to_type t
         on k.id = t.kid_id
@@ -14,7 +14,7 @@
     </select>
 
     <select id="selectSim" resultType="com.neu.dreambuilder.dto.kid.KidSimDto">
-        select id, name, age, photo, description from kid
+        select id, name, age, photo, description, address from kid
     </select>
 
     <select id="selectMisInfo" resultType="java.util.Map">

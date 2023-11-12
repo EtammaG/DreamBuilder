@@ -10,7 +10,11 @@
         from kid_award a
         join kid_award_to_type t
         on a.id = t.award_id
-        where t.type_id = #{typeId} and a.name like #{name}
+        where
+        t.type_id = #{typeId}
+        <if test="name != null">
+            and a.name like #{name}
+        </if>
     </select>
 
     <select id="selectLike" resultType="com.neu.dreambuilder.entity.kid.Award">

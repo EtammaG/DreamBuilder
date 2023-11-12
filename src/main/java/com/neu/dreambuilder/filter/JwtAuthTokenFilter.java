@@ -50,7 +50,9 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
         try {
              redisKey = JwtUtil.parseJWT(token).getBody().getSubject();
         }catch (JwtException e) {
-            throw new CustomException("illegal token");
+            log.warn("illegal token");
+            filterChain.doFilter(request, response);
+            return;
         }
         IUserDetails userDetails = JSON.parseObject(stringRedisTemplate.opsForValue().get(redisKey), IUserDetails.class);
         if (userDetails == null) {

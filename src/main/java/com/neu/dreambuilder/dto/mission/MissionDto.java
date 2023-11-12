@@ -12,8 +12,8 @@ import lombok.Setter;
 public class MissionDto extends Mission{
 
     @ApiModelProperty("进行人数")
-    private int totalNum;
+    private Integer totalNum;
 
     @ApiModelProperty("完成人数")
-    private int doneNum;
+    private Integer doneNum;
 }

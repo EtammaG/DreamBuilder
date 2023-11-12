@@ -1,5 +1,6 @@
 package com.neu.dreambuilder.service.kid.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.neu.dreambuilder.dto.kid.*;
 import com.neu.dreambuilder.entity.donor.KidDonation;
 import com.neu.dreambuilder.entity.donor.KidThing;
@@ -16,13 +17,19 @@ import com.neu.dreambuilder.mapper.kid.TypeMapper;
 import com.neu.dreambuilder.service.kid.KidInfoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class KidInfoServiceImpl implements KidInfoService {
+
+    private final String redisPrefix;
+    private final String typeKey;
 
     private final TypeMapper typeMapper;
     private final KidMapper kidMapper;
@@ -34,8 +41,13 @@ public class KidInfoServiceImpl implements KidInfoService {
     private final KidThingMapper kidThingMapper;
     private final KidDonationMapper kidDonationMapper;
 
+    private final StringRedisTemplate stringRedisTemplate;
+
     @Autowired
-    public KidInfoServiceImpl(TypeMapper typeMapper, KidMapper kidMapper, SchoolMapper schoolMapper, KidInfoMapper kidInfoMapper, DonorMapper donorMapper, KidThingMapper kidThingMapper, KidDonationMapper kidDonationMapper) {
+    public KidInfoServiceImpl(
+            @Value("${dream-builder.redis.prefix.kid.i}") String redisPrefix,
+            TypeMapper typeMapper, KidMapper kidMapper, SchoolMapper schoolMapper, KidInfoMapper kidInfoMapper, DonorMapper donorMapper, KidThingMapper kidThingMapper, KidDonationMapper kidDonationMapper, StringRedisTemplate stringRedisTemplate) {
+        this.redisPrefix = redisPrefix;
         this.typeMapper = typeMapper;
         this.kidMapper = kidMapper;
         this.schoolMapper = schoolMapper;
@@ -43,6 +55,8 @@ public class KidInfoServiceImpl implements KidInfoService {
         this.donorMapper = donorMapper;
         this.kidThingMapper = kidThingMapper;
         this.kidDonationMapper = kidDonationMapper;
+        this.stringRedisTemplate = stringRedisTemplate;
+        this.typeKey = redisPrefix + "type";
     }
 
     private KidRecDto toKidRecDto(Kid kid) {
@@ -74,7 +88,7 @@ public class KidInfoServiceImpl implements KidInfoService {
 
     @Override
     public List<Type> getAllType() {
-        return typeMapper.selectAll();
+        return JSON.parseArray(stringRedisTemplate.opsForValue().get(typeKey), Type.class);
     }
 
     @Override
@@ -143,6 +157,18 @@ public class KidInfoServiceImpl implements KidInfoService {
     @Override
     public KidRecDto getRec(Long kidId) {
         return toKidRecDto(kidMapper.selectById(kidId));
+    }
+
+    @Transactional
+//    @Scheduled(cron = "* * * * * *")
+    public void updateCache() {
+        // 有关当前用户的所有信息是否应该存入BaseContext中，一个人的信息不会很多
+        updateCacheType();
+    }
+
+    private void updateCacheType() {
+        List<Type> types = typeMapper.selectAll();
+        stringRedisTemplate.opsForValue().set(typeKey, JSON.toJSONString(types));
     }
 
 }

@@ -29,6 +29,6 @@ public class MissionKidViewDto {
     private boolean checked;
 
     @ApiModelProperty("评分")
-    private int score;
+    private Integer score;
 
 }

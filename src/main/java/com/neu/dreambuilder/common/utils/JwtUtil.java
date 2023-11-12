@@ -13,7 +13,7 @@ import java.util.*;
 public class JwtUtil {
 
     /**
-     * 默认有效期为一周
+     * 默认有效期为一天
      */
     public static final Long JWT_TTL = 24 * 60 * 60 * 1000L;
     /**
@@ -63,7 +63,8 @@ public class JwtUtil {
                 .setIssuer("DREAM")     // 签发者
                 .setIssuedAt(now)      // 签发时间
                 .signWith(signatureAlgorithm, secretKey) //使用HS256对称加密算法签名, 第二个参数为秘钥
-                .setExpiration(expDate);
+                //.setExpiration(expDate)
+                ;
     }
 
     /**

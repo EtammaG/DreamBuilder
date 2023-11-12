@@ -24,4 +24,7 @@ public class KidSimDto {
 
     @ApiModelProperty("简介")
     private String description;
+
+    @ApiModelProperty("地址")
+    private String address;
 }

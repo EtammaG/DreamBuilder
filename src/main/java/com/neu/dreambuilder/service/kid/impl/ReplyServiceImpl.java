@@ -33,6 +33,6 @@ public class ReplyServiceImpl implements ReplyService {
     public void add(Long id, Long missionId, String replyMedia) {
         Long replyId = IdWorker.nextId();
         replyMapper.insert(new Reply(replyId, replyMedia, null, null));
-        toMissionMapper.insert(new ToMission(id, missionId, replyId));
+        toMissionMapper.updateReply(new ToMission(id, missionId, replyId));
     }
 }

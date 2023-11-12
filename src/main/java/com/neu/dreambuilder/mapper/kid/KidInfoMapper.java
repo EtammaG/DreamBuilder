@@ -20,4 +20,6 @@ public interface KidInfoMapper {
     Integer selectWeekrankById(Long id);
 
     List<KidSimDto> selectSim();
+
+
 }

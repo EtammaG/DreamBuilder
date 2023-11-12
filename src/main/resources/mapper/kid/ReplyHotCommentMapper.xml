@@ -9,4 +9,9 @@
         <result column="content" property="content" />
     </resultMap>
 
+    <select id="selectAll" resultType="com.neu.dreambuilder.entity.kid.ReplyHotComment">
+        select *
+        from kid_reply_hot_comment
+    </select>
+
 </mapper>

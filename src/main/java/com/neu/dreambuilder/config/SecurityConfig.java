@@ -1,5 +1,6 @@
 package com.neu.dreambuilder.config;
 
+import com.neu.dreambuilder.exception.FilterExceptionFilter;
 import com.neu.dreambuilder.filter.JwtAuthTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +15,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JwtAuthTokenFilter jwtAuthTokenFilter;
 
     @Resource
-    private AuthenticationEntryPoint authenticationEntryPoint;
+    private FilterExceptionFilter filterExceptionFilter;
 
     @Bean
     public PasswordEncoder bCryptPasswordEncoder() {
@@ -83,11 +83,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-ui.html"
                 ).permitAll()
         //.hasAnyAuthority("ADMIN")
-      ;
-        http
-                .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
-
+        ;
 
         http.addFilterBefore(jwtAuthTokenFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(filterExceptionFilter, JwtAuthTokenFilter.class);
     }
 }

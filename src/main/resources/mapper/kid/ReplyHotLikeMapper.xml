@@ -7,8 +7,32 @@
         <result column="hot_id" property="hotId" />
         <result column="kid_id" property="kidId" />
     </resultMap>
+
     <select id="cat" resultType="java.lang.Integer">
         select 1 from kid_reply_hot_like where kid_id = #{kidId} and hot_id = #{hotId} limit 1
     </select>
+
+    <select id="selectAll" resultType="com.neu.dreambuilder.entity.kid.ReplyHotLike">
+        select *
+        from kid_reply_hot_like;
+    </select>
+
+    <delete id="delete">
+        delete
+        from kid_reply_hot_like
+        where kid_id = #{kidId} and hot_id = #{hotId};
+    </delete>
+
+    <delete id="deleteAll">
+        delete from kid_reply_hot_like
+    </delete>
+
+    <insert id="insertAll">
+        insert into kid_reply_hot_like (hot_id, kid_id)
+        values
+        <foreach collection="replies" separator="," item="reply">
+            (#{reply.hotId}, #{reply.kidId})
+        </foreach>
+    </insert>
 
 </mapper>

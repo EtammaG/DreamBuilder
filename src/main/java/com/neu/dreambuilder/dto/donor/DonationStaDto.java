@@ -12,15 +12,18 @@ import lombok.Setter;
 @ApiModel(value = "DonationStaDto", description = "捐助统计信息")
 public class DonationStaDto {
 
+    @ApiModelProperty("捐赠者ID")
+    private Long donorId;
+
     @ApiModelProperty("捐赠者昵称")
     private String nickname;
 
     @ApiModelProperty("捐助次数")
-    private int times;
+    private Integer times;
 
     @ApiModelProperty("捐赠金额")
-    private int amount;
+    private Integer amount;
 
     @ApiModelProperty("排行")
-    private int rank;
+    private Integer rank;
 }

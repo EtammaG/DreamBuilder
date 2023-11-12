@@ -43,6 +43,15 @@ public class KidHotReplyController {
         return Result.success();
     }
 
+    @PostMapping("/unlike")
+    @ApiOperation("对热门提交取消点赞")
+    public Result<Object> unlike(@RequestBody Map<String, String> map) {
+        //    public Result<Object> unlike(@ApiParam(value = "热门提交的ID") String hotId) {
+        String hotId = map.get("hotId");
+        hotReplyService.unlike(BaseContext.getCurrentIUserDetails().getId(), Long.parseLong(hotId));
+        return Result.success();
+    }
+
     @GetMapping("/{hotId}/comment")
     @ApiOperation("获取热门提交的评论列表")
     public Result<List<CommentDto>> getComment(@PathVariable @ApiParam(value = "热门提交的ID") String hotId) {
@@ -56,7 +65,7 @@ public class KidHotReplyController {
         //            @ApiParam(value = "热门提交的ID") String hotId,
         //            @ApiParam(value = "评论内容文本") String comment) {
         String hotId = map.get("hotId");
-        String comment = map.get("comment");
+        String comment = map.get("content");
         hotReplyService.addComment(BaseContext.getCurrentIUserDetails().getId(), Long.parseLong(hotId), comment);
         return Result.success();
     }
