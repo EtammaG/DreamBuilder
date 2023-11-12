@@ -131,7 +131,6 @@ public class VolunteerMissionServiceImpl implements VolunteerMissionService {
 //        LambdaQueryWrapper<ToMission> toMissionLambdaQueryWrapper = new LambdaQueryWrapper<>();
 //        toMissionLambdaQueryWrapper.eq(ToMission::getMissionId,missionId);
 //        toMissionMapper.selectList(toMissionLambdaQueryWrapper);
-        List<KidVieDto> kidVieDtos = volunteerStatisticMapper.volunMissionKid(missionId);
         return volunteerStatisticMapper.volunMissionKid(missionId);
     }
 

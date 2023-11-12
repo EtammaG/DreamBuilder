@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -31,12 +32,15 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public SseEmitter receive(Long fromId, IUserDetails to) {
         if (to.getType() != 2 && to.getType() != 3) return null;
-        SseEmitter sseEmitter = new SseEmitter();
+        SseEmitter sseEmitter = new SseEmitter(-1L);
         try {
-            sseEmitter.send(chatMapper.selectAllMsgByBoth(
+            List<String> msgs = chatMapper.selectAllMsgByBoth(
                     to.getId(),
                     fromId,
-                    to.getType() == 2 ? 0 : 1));
+                    to.getType() == 2 ? 0 : 1);
+            for(String msg : msgs)
+                sseEmitter.send(msg);
+
         } catch (IOException e) {
             log.warn("连接失败", e);
             throw new CustomException("连接失败");

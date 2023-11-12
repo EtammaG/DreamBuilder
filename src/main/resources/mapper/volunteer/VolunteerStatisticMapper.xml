@@ -43,12 +43,11 @@
 
     <select id="submitCount" resultType="java.util.Map">
 
-        SELECT vm.mission_id,count(km.reply_id) as count
-        FROM volun_to_mission AS vm, kid_to_mission AS km
+        SELECT vm.mission_id, COALESCE(count(km.reply_id), 0) as count
+        FROM volun_to_mission AS vm
+        LEFT JOIN kid_to_mission AS km ON vm.mission_id = km.mission_id and km.reply_id IS NOT NULL
         WHERE vm.volun_id = #{volunId}
-          AND vm.mission_id = km.mission_id
-          AND km.reply_id IS NOT NULL
-        group by vm.mission_id
+        group by vm.mission_id;
 
     </select>
 
@@ -82,12 +81,12 @@
           ORDER BY m.date DESC
     </select>
     <select id="volunMissionKid" resultType="com.neu.dreambuilder.dto.kid.KidVieDto">
-        SELECT k.id as kidId,k.photo as kidPic,k.name as kidName
-        FROM kid_to_mission as km, kid as k
+        SELECT k.id as kidId,k.photo as kidPic,k.name as kidName,kr.media replyFile
+        FROM kid_to_mission as km, kid as k , kid_reply as kr
         WHERE km.mission_id = #{missionId}
-          AND km.kid_id = k.id
-          AND km.reply_id is not null
-
+        AND km.kid_id = k.id
+        AND km.reply_id is not null
+        and kr.id = km.mission_id
     </select>
     <select id="allArticle" resultType="com.neu.dreambuilder.dto.volunteer.ArticleDto">
         SELECT va.id, va.author_name, va.content_pic, va.author_pic, va.title, va.content, va.article_time, COUNT(vac.article_id) AS amount
