@@ -19,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/kid/award")
@@ -50,7 +51,9 @@ public class KidAwardController {
 
     @PostMapping("/like")
     @ApiOperation("收藏奖品")
-    public Result<Object> addLike(@ApiParam(value = "奖品ID") String awardId) {
+    public Result<Object> addLike(@RequestBody Map<String, String> map) {
+//        public Result<Object> addLike(@ApiParam(value = "奖品ID") String awardId) {
+        String awardId = map.get("awardId");
         awardService.like(BaseContext.getCurrentIUserDetails().getId(), Long.parseLong(awardId));
         return Result.success();
     }
@@ -64,8 +67,10 @@ public class KidAwardController {
 
     @PostMapping("/exchange")
     @ApiOperation("兑换奖品")
-    public Result<Object> addExchange(@ApiParam(value = "奖品ID") String awardId) {
-        awardService.exchange(BaseContext.getCurrentIUserDetails().getId(), Long.parseLong(awardId));
+    public Result<Object> addExchange(@RequestBody Map<String, String> map) {
+        //public Result<Object> addExchange(@ApiParam(value = "奖品ID") String awardId) {
+        String awardId = map.get("awardId");
+            awardService.exchange(BaseContext.getCurrentIUserDetails().getId(), Long.parseLong(awardId));
         return Result.success();
     }
 

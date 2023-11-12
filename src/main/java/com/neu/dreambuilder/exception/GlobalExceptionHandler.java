@@ -4,9 +4,11 @@ import com.neu.dreambuilder.exception.bean.CustomException;
 import com.neu.dreambuilder.dto.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 @RestControllerAdvice
@@ -33,6 +35,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public Result<String> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
         return Result.error("上传文件过大");
+    }
+
+    @ExceptionHandler(InternalAuthenticationServiceException.class)
+    public Result<String> handleInternalAuthenticationServiceException(InternalAuthenticationServiceException e) {
+        return Result.error("账号或密码错误");
+    }
+
+    @ExceptionHandler(AsyncRequestTimeoutException.class)
+    public void handleAsyncRequestTimeoutException(AsyncRequestTimeoutException e) {
+        log.warn("连接超时");
     }
 
 }

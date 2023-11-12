@@ -2,12 +2,11 @@ package com.neu.dreambuilder.service.common;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public interface FileService {
 
     String save(MultipartFile file, String fileDir);
 
-    FileInputStream get(String filename) throws FileNotFoundException;
+    byte[] get(String filename, String fileDir) throws IOException;
 }

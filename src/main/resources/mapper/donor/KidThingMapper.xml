@@ -9,5 +9,8 @@
         <result column="thing_name" property="thingName" />
         <result column="time" property="time" />
     </resultMap>
+    <select id="selectOneByKidId" resultType="com.neu.dreambuilder.entity.donor.KidThing">
+        select * from donor_kid_thing where kid_id = #{kidId} limit 1
+    </select>
 
 </mapper>

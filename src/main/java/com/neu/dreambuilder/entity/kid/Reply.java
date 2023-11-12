@@ -34,7 +34,7 @@ public class Reply {
     private Integer score;
 
     @ApiModelProperty("对提交的评语")
-    private Integer comment;
+    private String comment;
 
 
 }

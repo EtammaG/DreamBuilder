@@ -1,6 +1,5 @@
 package com.neu.dreambuilder.service.common.impl;
 
-import com.neu.dreambuilder.common.utils.JwtUtil;
 import com.neu.dreambuilder.service.common.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,6 +10,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -29,27 +29,28 @@ public class FileServiceImpl implements FileService {
 
         String originalFilename = file.getOriginalFilename();
         int i = originalFilename.lastIndexOf(".");
-        String filename = originalFilename.substring(0, i);
         String filetype = originalFilename.substring(i);
 
-        File localFile = new File(filePath + originalFilename);
+        String localFileName = UUID.randomUUID() + filetype;
+        File localFile = new File(filePath + localFileName);
+
         try {
             file.transferTo(localFile);
         } catch (IOException e) {
             log.warn("文件报错失败", e);
             return null;
         }
-        return JwtUtil.createJWT(fileDir + filename) + filetype;
+        return localFileName;
     }
 
     @Override
-    public FileInputStream get(String filename) throws FileNotFoundException {
-        int i = filename.lastIndexOf(".");
-        String name = filename.substring(0, i);
-        String type = filename.substring(i);
-        return new FileInputStream(
-                FILE_PATH
-                        + JwtUtil.parseJWT(name).getBody().getSubject()
-                        + type);
+    public byte[] get(String filename, String fileDir) throws IOException {
+        File file = new File(FILE_PATH + fileDir + filename);
+        if (!file.exists()) throw new FileNotFoundException();
+        try (FileInputStream fis = new FileInputStream(file)) {
+            byte[] bytes = new byte[fis.available()];
+            fis.read(bytes);
+            return bytes;
+        }
     }
 }

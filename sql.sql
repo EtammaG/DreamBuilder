@@ -26,7 +26,7 @@ CREATE TABLE `chat` (
   `content` text COMMENT '消息内容',
   `from_id` bigint DEFAULT NULL COMMENT '发送方ID',
   `to_id` bigint DEFAULT NULL COMMENT '接收方ID',
-  `type` tinyint DEFAULT NULL COMMENT '0表示kid->volunteer，1表示kid->volunteer',
+  `type` tinyint DEFAULT NULL COMMENT '0表示volunteer->kid，1表示kid->volunteer',
   `time` datetime DEFAULT NULL COMMENT '发送时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='聊天记录暂存';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -37,6 +37,7 @@ CREATE TABLE `chat` (
 
 LOCK TABLES `chat` WRITE;
 /*!40000 ALTER TABLE `chat` DISABLE KEYS */;
+INSERT INTO `chat` VALUES ('1',1,1,0,'2023-10-10 15:24:11'),('2',1,1,0,'2023-11-17 15:43:16'),('3',1,1,0,'2023-12-10 15:57:04');
 /*!40000 ALTER TABLE `chat` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -60,7 +61,7 @@ CREATE TABLE `donor` (
 
 LOCK TABLES `donor` WRITE;
 /*!40000 ALTER TABLE `donor` DISABLE KEYS */;
-INSERT INTO `donor` VALUES (1,'A'),(2,'B');
+INSERT INTO `donor` VALUES (1,'A'),(2,'B'),(3,'C');
 /*!40000 ALTER TABLE `donor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,7 +86,7 @@ CREATE TABLE `donor_kid_donation` (
 
 LOCK TABLES `donor_kid_donation` WRITE;
 /*!40000 ALTER TABLE `donor_kid_donation` DISABLE KEYS */;
-INSERT INTO `donor_kid_donation` VALUES (1,1,1,'2023-11-06 22:23:53'),(1,1,4,'2023-11-06 22:24:02'),(2,1,3,'2023-11-06 22:24:10'),(2,1,5,'2023-11-06 22:24:16');
+INSERT INTO `donor_kid_donation` VALUES (1,1,1,'2023-11-06 22:23:53'),(1,2,4,'2023-11-06 22:24:02'),(2,3,3,'2023-11-06 22:24:10'),(2,123,5,'2023-11-06 22:24:16'),(1,432,100,'2023-10-16 18:24:06'),(3,1,44,'2023-11-09 22:46:18'),(3,432,NULL,'2023-10-16 22:46:39');
 /*!40000 ALTER TABLE `donor_kid_donation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -110,6 +111,7 @@ CREATE TABLE `donor_kid_thing` (
 
 LOCK TABLES `donor_kid_thing` WRITE;
 /*!40000 ALTER TABLE `donor_kid_thing` DISABLE KEYS */;
+INSERT INTO `donor_kid_thing` VALUES (1,123,'1-123','2023-11-09 19:16:18'),(1,432,'1-432','2023-11-09 19:16:28'),(2,1,'2-1','2023-11-09 19:16:40'),(1,2,'1-2','2023-11-09 19:17:56'),(3,432,'3-432','2023-11-09 22:47:21'),(3,1,'3-1','2023-11-09 22:47:33');
 /*!40000 ALTER TABLE `donor_kid_thing` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -137,6 +139,7 @@ CREATE TABLE `donor_project` (
 
 LOCK TABLES `donor_project` WRITE;
 /*!40000 ALTER TABLE `donor_project` DISABLE KEYS */;
+INSERT INTO `donor_project` VALUES (1,'A','AA','AAA','pic.png','辽宁沈阳'),(2,'B','BB','BBB','pic.png','辽宁沈阳'),(3,'V','VV','VVV','pic.png','辽宁沈阳'),(4,'C','CC','CCC','pic.png','辽宁沈阳');
 /*!40000 ALTER TABLE `donor_project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -161,7 +164,7 @@ CREATE TABLE `donor_project_donation` (
 
 LOCK TABLES `donor_project_donation` WRITE;
 /*!40000 ALTER TABLE `donor_project_donation` DISABLE KEYS */;
-INSERT INTO `donor_project_donation` VALUES (1,1,200,'2023-11-06 22:37:19'),(2,2,300,'2023-11-06 22:37:27');
+INSERT INTO `donor_project_donation` VALUES (1,1,200,'2023-11-06 22:37:19'),(2,2,300,'2023-11-06 22:37:27'),(3,1,400,'2023-11-09 19:19:03'),(4,1,1,'2023-11-09 19:22:57');
 /*!40000 ALTER TABLE `donor_project_donation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -184,6 +187,7 @@ CREATE TABLE `donor_project_to_type` (
 
 LOCK TABLES `donor_project_to_type` WRITE;
 /*!40000 ALTER TABLE `donor_project_to_type` DISABLE KEYS */;
+INSERT INTO `donor_project_to_type` VALUES (1,1),(2,2),(3,1),(4,1);
 /*!40000 ALTER TABLE `donor_project_to_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,6 +211,7 @@ CREATE TABLE `donor_project_type` (
 
 LOCK TABLES `donor_project_type` WRITE;
 /*!40000 ALTER TABLE `donor_project_type` DISABLE KEYS */;
+INSERT INTO `donor_project_type` VALUES (1,'Q'),(2,'W');
 /*!40000 ALTER TABLE `donor_project_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -242,7 +247,7 @@ CREATE TABLE `kid` (
 
 LOCK TABLES `kid` WRITE;
 /*!40000 ALTER TABLE `kid` DISABLE KEYS */;
-INSERT INTO `kid` VALUES (123,'1',1,'1',1,1,'1','1','1',1,1,1,1,1),(432,'1',1,'1',1,1,'1','1','1',1,1,1,1,1);
+INSERT INTO `kid` VALUES (1,'A',11,'assets/zuijinjuanzhu.png',1,1,'沈阳','11111111111111','阿斯顿发生',1,1,1,1,1),(2,'B',22,'assets/zuijinjuanzhu.png',1,2,'shen','22222222222222222222222222','认为人发送',1,1,1,1,1),(3,'C',33,'assets/zuijinjuanzhu.png',1,3,'l','3333333333333333333','发士大夫',1,1,1,1,1),(123,'123A',123123,'assets/zuijinjuanzhu.png',1,4,'liao','5423523','的方式发',12,1,1,1,1),(432,'432B',1,'assets/zuijinjuanzhu.png',1,5,'辽宁','87686','发生的',1,1,1,1,1);
 /*!40000 ALTER TABLE `kid` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -257,6 +262,7 @@ CREATE TABLE `kid_award` (
   `id` bigint NOT NULL COMMENT '唯一ID',
   `name` varchar(30) DEFAULT NULL COMMENT '名称',
   `description` varchar(100) DEFAULT NULL COMMENT '描述',
+  `pic` varchar(100) DEFAULT NULL,
   `point` int DEFAULT NULL COMMENT '需要点数',
   `stock` int DEFAULT NULL COMMENT '库存',
   PRIMARY KEY (`id`)
@@ -269,6 +275,7 @@ CREATE TABLE `kid_award` (
 
 LOCK TABLES `kid_award` WRITE;
 /*!40000 ALTER TABLE `kid_award` DISABLE KEYS */;
+INSERT INTO `kid_award` VALUES (1,'AA','AAAA','pic.png',10,100),(2,'BB','BBBB','pic.png',20,200),(3,'CC','CCCC','pic.png',5,50),(4,'DD','DDDD','pic.png',15,75);
 /*!40000 ALTER TABLE `kid_award` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -293,6 +300,7 @@ CREATE TABLE `kid_award_exchange` (
 
 LOCK TABLES `kid_award_exchange` WRITE;
 /*!40000 ALTER TABLE `kid_award_exchange` DISABLE KEYS */;
+INSERT INTO `kid_award_exchange` VALUES (1,1,'1','2023-11-09 23:22:41');
 /*!40000 ALTER TABLE `kid_award_exchange` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -315,6 +323,7 @@ CREATE TABLE `kid_award_like` (
 
 LOCK TABLES `kid_award_like` WRITE;
 /*!40000 ALTER TABLE `kid_award_like` DISABLE KEYS */;
+INSERT INTO `kid_award_like` VALUES (1,1),(2,1);
 /*!40000 ALTER TABLE `kid_award_like` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -337,6 +346,7 @@ CREATE TABLE `kid_award_to_type` (
 
 LOCK TABLES `kid_award_to_type` WRITE;
 /*!40000 ALTER TABLE `kid_award_to_type` DISABLE KEYS */;
+INSERT INTO `kid_award_to_type` VALUES (1,2),(2,1),(3,1),(4,1);
 /*!40000 ALTER TABLE `kid_award_to_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -360,6 +370,7 @@ CREATE TABLE `kid_award_type` (
 
 LOCK TABLES `kid_award_type` WRITE;
 /*!40000 ALTER TABLE `kid_award_type` DISABLE KEYS */;
+INSERT INTO `kid_award_type` VALUES (1,'Z'),(2,'X'),(3,'C'),(4,'V'),(5,'B');
 /*!40000 ALTER TABLE `kid_award_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -389,6 +400,7 @@ CREATE TABLE `kid_mission` (
 
 LOCK TABLES `kid_mission` WRITE;
 /*!40000 ALTER TABLE `kid_mission` DISABLE KEYS */;
+INSERT INTO `kid_mission` VALUES (1,'背书','背诵红楼梦','花一天时间背诵红楼梦',0,'A',10,'2023-11-09'),(2,'背书','背诵红楼梦','花一天时间背诵红楼梦',1,'B',20,'2023-11-08'),(3,'背书','背诵红楼梦','花一天时间背诵红楼梦',0,'C',30,'2023-11-08'),(4,'运动','跳绳','一分钟时间跳三次绳',1,'C',10,'2023-11-09'),(5,'运动','跳绳','一分钟时间跳三次绳',0,'B',10,'2023-11-09'),(6,'运动','跳绳','一分钟时间跳三次绳',1,'A',10,'2023-11-09');
 /*!40000 ALTER TABLE `kid_mission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -403,7 +415,7 @@ CREATE TABLE `kid_reply` (
   `id` bigint NOT NULL COMMENT '唯一ID',
   `media` varchar(500) DEFAULT NULL COMMENT '提交媒体文件的路径',
   `score` int DEFAULT NULL COMMENT '对提交的评分',
-  `comment` int DEFAULT NULL COMMENT '对提交的评语',
+  `comment` varchar(500) DEFAULT NULL COMMENT '对提交的评语',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='对任务的提交';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -414,6 +426,7 @@ CREATE TABLE `kid_reply` (
 
 LOCK TABLES `kid_reply` WRITE;
 /*!40000 ALTER TABLE `kid_reply` DISABLE KEYS */;
+INSERT INTO `kid_reply` VALUES (1,'reply.png',100,'A'),(2,'reply.png',33,'B'),(3,'reply.png',100,'C'),(4,'reply.png',NULL,''),(5,'reply.png',88,'A'),(6,'reply.png',9,'C'),(11,'reply.png',88,'Z'),(33,'reply.png',NULL,''),(55,'reply.png',44,'Z');
 /*!40000 ALTER TABLE `kid_reply` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -437,6 +450,7 @@ CREATE TABLE `kid_reply_hot` (
 
 LOCK TABLES `kid_reply_hot` WRITE;
 /*!40000 ALTER TABLE `kid_reply_hot` DISABLE KEYS */;
+INSERT INTO `kid_reply_hot` VALUES (1,11),(2,1),(3,2),(4,3),(5,4),(6,5);
 /*!40000 ALTER TABLE `kid_reply_hot` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -450,7 +464,8 @@ DROP TABLE IF EXISTS `kid_reply_hot_comment`;
 CREATE TABLE `kid_reply_hot_comment` (
   `hot_id` bigint DEFAULT NULL COMMENT '提交成果的热门ID',
   `kid_id` bigint DEFAULT NULL COMMENT '发布评论孩子的ID',
-  `content` varchar(500) DEFAULT NULL COMMENT '评论的内容'
+  `content` varchar(500) DEFAULT NULL COMMENT '评论的内容',
+  `time` datetime DEFAULT NULL COMMENT '评论时间'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='热门提交成果的评论';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -460,6 +475,7 @@ CREATE TABLE `kid_reply_hot_comment` (
 
 LOCK TABLES `kid_reply_hot_comment` WRITE;
 /*!40000 ALTER TABLE `kid_reply_hot_comment` DISABLE KEYS */;
+INSERT INTO `kid_reply_hot_comment` VALUES (1,1,'你好棒','2023-11-09 23:34:50'),(1,3,'你真棒','2023-11-09 23:35:10'),(2,3,'6','2023-11-09 23:35:36'),(2,3,'6','2023-11-09 23:35:42'),(4,123,'7','2023-11-09 23:35:56'),(5,432,'9','2023-11-09 23:36:02'),(1,1,'666','2023-11-09 23:49:30');
 /*!40000 ALTER TABLE `kid_reply_hot_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -472,7 +488,7 @@ DROP TABLE IF EXISTS `kid_reply_hot_like`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `kid_reply_hot_like` (
   `hot_id` bigint DEFAULT NULL COMMENT '热门提交成果的热门ID',
-  `kid_id` int DEFAULT NULL COMMENT '点赞孩子的ID'
+  `kid_id` bigint DEFAULT NULL COMMENT '点赞孩子的ID'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='热门提交成果的点赞';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -482,6 +498,7 @@ CREATE TABLE `kid_reply_hot_like` (
 
 LOCK TABLES `kid_reply_hot_like` WRITE;
 /*!40000 ALTER TABLE `kid_reply_hot_like` DISABLE KEYS */;
+INSERT INTO `kid_reply_hot_like` VALUES (1,1),(1,3),(1,123),(2,1),(2,123),(3,1),(5,1);
 /*!40000 ALTER TABLE `kid_reply_hot_like` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -505,6 +522,7 @@ CREATE TABLE `kid_school` (
 
 LOCK TABLES `kid_school` WRITE;
 /*!40000 ALTER TABLE `kid_school` DISABLE KEYS */;
+INSERT INTO `kid_school` VALUES (1,'希望小学');
 /*!40000 ALTER TABLE `kid_school` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -528,6 +546,7 @@ CREATE TABLE `kid_to_mission` (
 
 LOCK TABLES `kid_to_mission` WRITE;
 /*!40000 ALTER TABLE `kid_to_mission` DISABLE KEYS */;
+INSERT INTO `kid_to_mission` VALUES (1,1,11),(1,2,NULL),(1,3,33),(1,4,NULL),(1,5,55),(2,1,1),(2,2,2),(2,3,3),(2,4,4),(2,5,5),(2,6,6);
 /*!40000 ALTER TABLE `kid_to_mission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -550,6 +569,7 @@ CREATE TABLE `kid_to_type` (
 
 LOCK TABLES `kid_to_type` WRITE;
 /*!40000 ALTER TABLE `kid_to_type` DISABLE KEYS */;
+INSERT INTO `kid_to_type` VALUES (123,1),(432,1),(1,2),(2,2),(3,2);
 /*!40000 ALTER TABLE `kid_to_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -573,6 +593,7 @@ CREATE TABLE `kid_type` (
 
 LOCK TABLES `kid_type` WRITE;
 /*!40000 ALTER TABLE `kid_type` DISABLE KEYS */;
+INSERT INTO `kid_type` VALUES (1,'AA'),(2,'BB');
 /*!40000 ALTER TABLE `kid_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -596,6 +617,7 @@ CREATE TABLE `user_donor` (
 
 LOCK TABLES `user_donor` WRITE;
 /*!40000 ALTER TABLE `user_donor` DISABLE KEYS */;
+INSERT INTO `user_donor` VALUES (1,'dddddd','$2a$10$rt3xG43aj7nrHo9cqFhU2e1lIeBMJdZT3jocGT6.5mTYSBfYorLWC');
 /*!40000 ALTER TABLE `user_donor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -619,6 +641,7 @@ CREATE TABLE `user_kid` (
 
 LOCK TABLES `user_kid` WRITE;
 /*!40000 ALTER TABLE `user_kid` DISABLE KEYS */;
+INSERT INTO `user_kid` VALUES (1,'kkkkkk','$2a$10$YswWv.C8pfK0KST8m5Sb4OfD.gVDwnLiiDepTivsahA.FgmKtLYX.');
 /*!40000 ALTER TABLE `user_kid` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -642,6 +665,7 @@ CREATE TABLE `user_volunteer` (
 
 LOCK TABLES `user_volunteer` WRITE;
 /*!40000 ALTER TABLE `user_volunteer` DISABLE KEYS */;
+INSERT INTO `user_volunteer` VALUES (1,'vvvvvv','$2a$10$LPCkNME6a15PQXOq.unS8eXbf3JyGDJ3A9mWoPaXDUShO9j8A2cpi');
 /*!40000 ALTER TABLE `user_volunteer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -720,6 +744,29 @@ LOCK TABLES `volun_article_like` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `volun_article_love`
+--
+
+DROP TABLE IF EXISTS `volun_article_love`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `volun_article_love` (
+  `volun_id` bigint DEFAULT NULL COMMENT '志愿者id',
+  `article_id` bigint DEFAULT NULL COMMENT '文章id',
+  `love_id` bigint DEFAULT NULL COMMENT '点赞id'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='文章点赞';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `volun_article_love`
+--
+
+LOCK TABLES `volun_article_love` WRITE;
+/*!40000 ALTER TABLE `volun_article_love` DISABLE KEYS */;
+/*!40000 ALTER TABLE `volun_article_love` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `volun_to_kid`
 --
 
@@ -790,6 +837,7 @@ CREATE TABLE `volunteer` (
 
 LOCK TABLES `volunteer` WRITE;
 /*!40000 ALTER TABLE `volunteer` DISABLE KEYS */;
+INSERT INTO `volunteer` VALUES (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `volunteer` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -802,4 +850,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-11-07 20:46:41
+-- Dump completed on 2023-11-10 16:10:43

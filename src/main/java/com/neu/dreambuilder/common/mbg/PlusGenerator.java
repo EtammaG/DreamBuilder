@@ -60,7 +60,9 @@ public class PlusGenerator {
 //                            .addInclude("user_donor")
 //                            .addInclude("user_kid")
 //                            .addInclude("user_volunteer")
-                            .addInclude("volun_to_mission")
+//                            .addInclude("volun_to_mission")
+                            .addInclude("volun_article_love")
+                            .addTablePrefix("volun_")
                             .entityBuilder()
                             .enableLombok() //使用lombok
                             .disableSerialVersionUID()

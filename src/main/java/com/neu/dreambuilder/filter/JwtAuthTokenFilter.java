@@ -5,6 +5,7 @@ import com.neu.dreambuilder.common.utils.BaseContext;
 import com.neu.dreambuilder.common.utils.JwtUtil;
 import com.neu.dreambuilder.entity.user.IUserDetails;
 import com.neu.dreambuilder.exception.bean.CustomException;
+import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -45,7 +46,12 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        String redisKey = JwtUtil.parseJWT(token).getBody().getSubject();
+        String redisKey;
+        try {
+             redisKey = JwtUtil.parseJWT(token).getBody().getSubject();
+        }catch (JwtException e) {
+            throw new CustomException("illegal token");
+        }
         IUserDetails userDetails = JSON.parseObject(stringRedisTemplate.opsForValue().get(redisKey), IUserDetails.class);
         if (userDetails == null) {
             log.warn("illegal token");
@@ -61,7 +67,7 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             int i = Integer.parseInt(count);
             if (i > LIMIT_TIMES_IN_A_MINUTE)
                 throw new CustomException("请求次数过多，请稍后再试");
-            stringRedisTemplate.opsForValue().set(redisLimitKey, String.valueOf(i + 1));
+            stringRedisTemplate.opsForValue().set(redisLimitKey, String.valueOf(i + 1), Duration.ofMinutes(1));
         }
 
         stringRedisTemplate.expire(redisKey, SIGNIN_DURATION);

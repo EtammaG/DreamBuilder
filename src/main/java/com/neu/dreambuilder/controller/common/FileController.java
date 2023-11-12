@@ -3,14 +3,12 @@ package com.neu.dreambuilder.controller.common;
 import com.neu.dreambuilder.dto.Result;
 import com.neu.dreambuilder.service.common.FileService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Objects;
 
 @Slf4j
@@ -38,17 +36,17 @@ public abstract class FileController {
         return Result.error("只能上传媒体文件");
     }
 
-    public ResponseEntity<byte[]> download(String filename) {
-        try (FileInputStream is = fileService.get(filename)) {
-            byte[] bytes = new byte[is.available()];
-            is.read(bytes);
-            MultiValueMap<String, String> headers = new HttpHeaders();
-            headers.add("Content-Disposition", "attachment;filename=" + filename);
-            HttpStatus statusCode = HttpStatus.OK;
-            return new ResponseEntity<>(bytes, headers, statusCode);
+    public void download(String filename, HttpServletResponse response) {
+        response.reset();
+        response.setCharacterEncoding("UTF-8");
+        response.addHeader("Content-Disposition", "attachment;filename=" + filename);
+        response.setContentType("application/octet-stream");
+        try {
+            OutputStream os = new BufferedOutputStream(response.getOutputStream());
+            os.write(fileService.get(filename, fileDir()));
+            os.flush();
         } catch (IOException e) {
-            log.warn("文件读取失败", e);
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+            e.printStackTrace();
         }
     }
 

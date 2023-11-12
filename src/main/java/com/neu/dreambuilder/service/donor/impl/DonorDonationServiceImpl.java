@@ -65,8 +65,8 @@ public class DonorDonationServiceImpl implements DonorDonationService {
     @Override
     public void addProject(Long donorId, Long projectId, int amount) {
         projectDonationMapper.insert(new ProjectDonation(
-                donorId,
                 projectId,
+                donorId,
                 amount,
                 LocalDateTime.now()
         ));

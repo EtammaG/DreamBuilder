@@ -1,6 +1,5 @@
 package com.neu.dreambuilder.service.kid.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.neu.dreambuilder.dto.kid.*;
 import com.neu.dreambuilder.entity.donor.KidDonation;
 import com.neu.dreambuilder.entity.donor.KidThing;
@@ -49,13 +48,9 @@ public class KidInfoServiceImpl implements KidInfoService {
     private KidRecDto toKidRecDto(Kid kid) {
         String award = null;
         Long donorId = null;
-        LambdaQueryWrapper<KidDonation> w1 = new LambdaQueryWrapper<>();
-        w1.eq(KidDonation::getKidId, kid.getId());
-        KidDonation kidDonation = kidDonationMapper.selectOne(w1);
+        KidDonation kidDonation = kidDonationMapper.selectOneByKidId(kid.getId());
         if (kidDonation == null) {
-            LambdaQueryWrapper<KidThing> w2 = new LambdaQueryWrapper<>();
-            w2.eq(KidThing::getKidId, kid.getId());
-            KidThing kidThing = kidThingMapper.selectOne(w2);
+            KidThing kidThing = kidThingMapper.selectOneByKidId(kid.getId());
             if (kidThing != null) {
                 award = kidThing.getThingName();
                 donorId = kidThing.getDonorId();
@@ -112,7 +107,7 @@ public class KidInfoServiceImpl implements KidInfoService {
         int optMissionDone = 0;
         for (Map<String, Object> map : maps) {
             Integer type = (Integer) map.get("type");
-            String replyId = (String) map.get("reply_id");
+            Long replyId = (Long) map.get("reply_id");
             if (type == 0 && replyId == null) optMissionWaiting++;
             if (type == 1 && replyId == null) subMissionWaiting++;
             if (type == 0 && replyId != null) optMissionDone++;

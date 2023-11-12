@@ -16,5 +16,8 @@
     <select id="selectTotalAmountByKidId" resultType="java.lang.Integer">
         select sum(amount) from donor_kid_donation where kid_id = #{kidId}
     </select>
+    <select id="selectOneByKidId" resultType="com.neu.dreambuilder.entity.donor.KidDonation">
+        select * from donor_kid_donation where kid_id = #{kidId} limit 1
+    </select>
 
 </mapper>

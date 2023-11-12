@@ -15,6 +15,8 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface KidDonationMapper extends BaseMapper<KidDonation> {
 
+    KidDonation selectOneByKidId(Long kidId);
+
     Integer selectTotalAmount();
 
     Integer selectTotalAmountByKidId(Long kidId);
